@@ -1,0 +1,28 @@
+{
+  "name": "10th_node",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "본인의 브랜치에서만 작업하고, `main` 브랜치는 직접 수정하지 않습니다.",
+  "homepage": "https://github.com/SWU-UMC/10th_Node.js#readme",
+  "bugs": {
+    "url": "https://github.com/SWU-UMC/10th_Node.js/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SWU-UMC/10th_Node.js.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "main": "IO.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/index.js",
+    "dev": "nodemon --exec node src/index.js"
+  },
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
