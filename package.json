@@ -1,0 +1,29 @@
+{
+  "name": "y",
+  "version": "1.0.0",
+  "description": "본인의 브랜치에서만 작업하고, `main` 브랜치는 직접 수정하지 않습니다.",
+  "homepage": "https://github.com/SWU-UMC/10th_Node.js#readme",
+  "bugs": {
+    "url": "https://github.com/SWU-UMC/10th_Node.js/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SWU-UMC/10th_Node.js.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "tsx src/index.ts",
+    "dev": "nodemon --exec tsx src/index.ts"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
+    "tsx": "^4.21.0"
+  },
+  "dependencies": {
+    "bcrypt": "^6.0.0"
+  }
+}
