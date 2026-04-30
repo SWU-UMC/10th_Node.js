@@ -3,4 +3,7 @@ node_modules/
 
 # dotenv environment variable files
 .env
-.env.*.DS_Store
+.env.*
+
+# macOS system files
+.DS_Store
