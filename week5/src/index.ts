@@ -6,6 +6,7 @@ import cors from "cors";
 import { handleUserSignUp } from "./modules/users/controllers/user.controller.js";
 import { handleStoreAdd } from "./modules/stores/controllers/store.controller.js";
 import { handleReviewAdd } from "./modules/reviews/controllers/review.controller.js";
+import { handleMissionAdd } from "./modules/missions/controllers/mission.controller.js";
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
@@ -24,6 +25,7 @@ app.get("/", (req: Request, res: Response) => {
 app.post("/api/v1/users/signup", handleUserSignUp);
 app.post("/api/v1/stores", handleStoreAdd);         // 1-1. 특정 지역에 가게 추가
 app.post("/api/v1/reviews", handleReviewAdd);       // 1-2. 가게에 리뷰 추가
+app.post("/api/v1/missions", handleMissionAdd);     // 1-3. 가게에 미션 추가
 
 // 4. 서버 시작
 app.listen(port, () => {
