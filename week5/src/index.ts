@@ -4,6 +4,7 @@ dotenv.config(); // 환경 변수를 가장 먼저 로드해야 DB pool 생성 �
 import express, { Express, Request, Response } from "express";
 import cors from "cors";
 import { handleUserSignUp } from "./modules/users/controllers/user.controller.js";
+import { handleStoreAdd } from "./modules/stores/controllers/store.controller.js";
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
@@ -20,6 +21,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.post("/api/v1/users/signup", handleUserSignUp);
+app.post("/api/v1/stores", handleStoreAdd);         // 1-1. 특정 지역에 가게 추가
 
 // 4. 서버 시작
 app.listen(port, () => {
