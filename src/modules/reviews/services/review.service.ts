@@ -1,5 +1,9 @@
-import { createReviewRequest } from "../dtos/review.dto.js";
-import { addReview, getReview } from "../repositories/review.repository.js";
+import { createReviewRequest, getReviewsQuery } from "../dtos/review.dto.js";
+import {
+  addReview,
+  getReview,
+  getAllStoreReviews,
+} from "../repositories/review.repository.js";
 
 // 리뷰 추가
 export const createReview = async (
@@ -18,4 +22,10 @@ export const createReview = async (
 
   const review = await getReview(reviewId);
   return review;
+};
+
+// 리뷰 조회
+export const getReviews = async (storeId: number, query: getReviewsQuery) => {
+  const reviews = await getAllStoreReviews(storeId, query);
+  return reviews;
 };

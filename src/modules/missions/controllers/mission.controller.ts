@@ -4,6 +4,7 @@ import {
   createMission,
   createMemberMission,
 } from "../services/mission.service.js";
+import { createMissionRequest } from "../dtos/mission.dto.js";
 
 // 미션 추가
 export const handleCreateMission = async (
@@ -15,7 +16,10 @@ export const handleCreateMission = async (
   console.log("body: ", req.body);
 
   const storeId = 1;
-  const mission = await createMission(storeId, req.body);
+  const mission = await createMission(
+    storeId,
+    req.body as createMissionRequest,
+  );
 
   res.status(StatusCodes.OK).json({ result: mission });
 };

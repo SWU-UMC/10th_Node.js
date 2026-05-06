@@ -3,3 +3,9 @@ export interface createReviewRequest {
   body: string;
   rate: number;
 }
+
+// 리뷰 조회
+export interface getReviewsQuery {
+  page: number;
+  limit: number;
+}

@@ -35,12 +35,20 @@ export interface User {
   preferences: number[];
 }
 
-// 유저와 선호도
-export interface UsersPreferences {
-  user: User;
-  preferences: number[];
+export interface UserSignUpResponse {
+  email: string;
+  name: string;
+  preferCategory: string[];
 }
+export const responseFromUser = (data: {
+  user: any;
+  preferences: any[];
+}): UserSignUpResponse => {
+  const preferCategory = data.preferences.map((p) => p.foodCategory.name);
 
-export const responseFromUser = ({ user, preferences }: UsersPreferences) => {
-  return { user, preferences };
+  return {
+    email: data.user.email,
+    name: data.user.name,
+    preferCategory,
+  };
 };

@@ -33,7 +33,7 @@ export const createMemberMission = async (
   const memberMissionId = await addMemberMission(userId, missionId);
 
   if (memberMissionId === null) {
-    throw new Error("");
+    throw new Error("존재하지 않는 미션입니다.");
   }
 
   const memberMission = await getMemberMission(memberMissionId);

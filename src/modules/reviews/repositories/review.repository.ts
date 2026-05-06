@@ -1,6 +1,5 @@
-import { ResultSetHeader, RowDataPacket } from "mysql2";
-import { pool } from "../../../db.config.js";
-import { createReviewRequest } from "../dtos/review.dto.js";
+import { prisma } from "../../../db.config.js";
+import { createReviewRequest, getReviewsQuery } from "../dtos/review.dto.js";
 
 // 리뷰 추가하기
 export const addReview = async (
@@ -8,48 +7,48 @@ export const addReview = async (
   storeId: number,
   data: createReviewRequest,
 ): Promise<number | null> => {
-  const conn = await pool.getConnection();
+  await prisma.store.findFirstOrThrow({
+    where: { id: storeId },
+  });
 
-  try {
-    const [confirm] = await pool.query<RowDataPacket[]>(
-      `SELECT EXISTS(SELECT 1 FROM store WHERE id = ?) as isExistStore`,
-      [storeId],
-    );
+  const created = await prisma.review.create({
+    data: {
+      body: data.body,
+      rate: data.rate,
+      userId,
+      storeId,
+    },
+  });
 
-    if (!confirm[0]?.isExistStore) {
-      return null;
-    }
-
-    const [result] = await pool.query<ResultSetHeader>(
-      `INSERT INTO review (user_id,store_id,body,rate) VALUES (?,?,?,?)`,
-      [userId, storeId, data.body, data.rate],
-    );
-
-    return result.insertId;
-  } catch (err) {
-    throw new Error(`오류가 발생했어요: ${err}`);
-  } finally {
-    conn.release();
-  }
+  return created.id;
 };
 
 // 리뷰 조회하기
 export const getReview = async (reviewId: number): Promise<any | null> => {
-  const conn = await pool.getConnection();
-  try {
-    const [review] = await pool.query<RowDataPacket[]>(
-      `SELECT * FROM review WHERE id = ?`,
-      [reviewId],
-    );
+  return await prisma.review.findFirstOrThrow({ where: { id: reviewId } });
+};
 
-    if (review.length === 0) {
-      return null;
-    }
+// 리뷰들 조회하기
+export const getAllStoreReviews = async (
+  storeId: number,
+  query: getReviewsQuery,
+) => {
+  const page = query.page || 1;
+  const limit = query.limit || 10;
+  const offset = (page - 1) * limit;
+  const reviews = await prisma.review.findMany({
+    select: {
+      id: true,
+      body: true,
+      rate: true,
+      user: true,
+      store: true,
+    },
+    where: { storeId },
+    skip: offset,
+    take: limit,
+    orderBy: { id: "asc" },
+  });
 
-    return review[0];
-  } catch (err) {
-    throw new Error(`오류가 발생했어요: ${err}`);
-  } finally {
-    conn.release();
-  }
+  return reviews;
 };

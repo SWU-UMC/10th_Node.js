@@ -2,7 +2,10 @@ import dotenv from "dotenv";
 import express, { Express, Request, Response } from "express";
 import cors from "cors";
 import { handleUserSignUp } from "./modules/users/controllers/user.controller.js";
-import { handleCreateReview } from "./modules/reviews/controllers/review.controller.js";
+import {
+  handleCreateReview,
+  handleGetStoreReviews,
+} from "./modules/reviews/controllers/review.controller.js";
 import {
   handleCreateMission,
   handleMemberMission,
@@ -29,6 +32,7 @@ app.post("/api/v1/users/signup", handleUserSignUp); // 회원가입
 app.post("/api/v1/users/review", handleCreateReview); // 가게에 리뷰 추가하기
 app.post("/api/v1/missions", handleCreateMission); // 가게에 미션 추가하기
 app.post("/api/v1/missions/:missionId/mine", handleMemberMission); // 가게의 미션을 도전 중인 미션에 추가하기
+app.get("/api/v1/stores/:storeId/reviews", handleGetStoreReviews); // 가게 리뷰들 조회
 
 // 4. 서버 시작
 app.listen(port, () => {
