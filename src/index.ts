@@ -10,6 +10,7 @@ import {
 import {
   handleCreateMission,
   handleMemberMission,
+  handleGetMyMissions,
 } from "./modules/missions/controllers/mission.controller.js";
 
 // 1. 환경 변수 설정
@@ -33,9 +34,9 @@ app.post("/api/v1/users/signup", handleUserSignUp); // 회원가입
 app.post("/api/v1/stores/:storeId/review", handleCreateReview); // 가게에 리뷰 추가하기
 app.post("/api/v1/missions", handleCreateMission); // 가게에 미션 추가하기
 app.post("/api/v1/missions/:missionId/mine", handleMemberMission); // 가게의 미션을 도전 중인 미션에 추가하기
-
 app.get("/api/v1/stores/:storeId/reviews", handleGetStoreReviews); // 가게 리뷰들 조회
 app.get("/api/v1/users/reviews", handleGetMyReviews); // 내가 작성한 리뷰들 조회
+app.get("/api/v1/users/missions", handleGetMyMissions); // 내가 진행 중인 미션 조회
 
 // 4. 서버 시작
 app.listen(port, () => {

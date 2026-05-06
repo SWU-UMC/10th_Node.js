@@ -4,3 +4,9 @@ export interface createMissionRequest {
   body: string;
   reward: number;
 }
+
+// 미션 조회
+export interface getMissionsQuery {
+  page: number;
+  limit: number;
+}

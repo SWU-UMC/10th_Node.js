@@ -1,9 +1,11 @@
+import { getMissionsQuery } from "../../missions/dtos/mission.dto.js";
 import { createMissionRequest } from "../dtos/mission.dto.js";
 import {
   addMission,
   getMission,
   addMemberMission,
   getMemberMission,
+  getAllMyMissions,
 } from "../repositories/mission.repository.js";
 
 // 미션 추가
@@ -38,4 +40,13 @@ export const createMemberMission = async (
 
   const memberMission = await getMemberMission(memberMissionId);
   return memberMission;
+};
+
+// 내가 진행 중인 미션 목록
+export const getMyMissions = async (
+  userId: number,
+  query: getMissionsQuery,
+) => {
+  const missions = await getAllMyMissions(userId, query);
+  return missions;
 };

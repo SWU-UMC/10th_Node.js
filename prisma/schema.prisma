@@ -71,6 +71,8 @@ model MemberMission{
   userId    Int     @map("user_id")
   mission   Mission @relation(fields: [missionId],references: [id])
   missionId Int     @map("mission_id")
+
+  @@map("member_mission")
 }
 
 model FoodCategory {

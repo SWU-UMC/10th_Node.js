@@ -3,6 +3,7 @@ import { StatusCodes } from "http-status-codes";
 import {
   createMission,
   createMemberMission,
+  getMyMissions,
 } from "../services/mission.service.js";
 import { createMissionRequest } from "../dtos/mission.dto.js";
 
@@ -38,4 +39,20 @@ export const handleMemberMission = async (
   const memberMission = await createMemberMission(userId, missionId);
 
   res.status(StatusCodes.OK).json({ result: memberMission });
+};
+
+// 내가 진행 중인 미션 조회
+export const handleGetMyMissions = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const userId = 1;
+  const query = {
+    page: Number(req.query.page) || 1,
+    limit: Number(req.query.limit) || 10,
+  };
+  const missions = await getMyMissions(userId, query);
+
+  res.status(StatusCodes.OK).json({ result: missions });
 };

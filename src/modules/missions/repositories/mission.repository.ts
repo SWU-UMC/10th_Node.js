@@ -1,4 +1,5 @@
 import { prisma } from "../../../db.config.js";
+import { getMissionsQuery } from "../../missions/dtos/mission.dto.js";
 import { createMissionRequest } from "../dtos/mission.dto.js";
 
 export const addMission = async (
@@ -50,4 +51,30 @@ export const getMemberMission = async (
   await prisma.memberMission.findFirstOrThrow({
     where: { id: memberMissionId },
   });
+};
+
+// 내가 도전 중인 미션 목록
+export const getAllMyMissions = async (
+  userId: number,
+  query: getMissionsQuery,
+) => {
+  const page = query.page || 1;
+  const limit = query.limit || 10;
+  const offset = (page - 1) * limit;
+  const missions = await prisma.memberMission.findMany({
+    select: {
+      id: true,
+      status: true,
+      mission: true,
+      user: true,
+    },
+    where: {
+      userId,
+      status: "CHALLENGING",
+    },
+    skip: offset,
+    take: limit,
+    orderBy: { id: "asc" },
+  });
+  return missions;
 };
