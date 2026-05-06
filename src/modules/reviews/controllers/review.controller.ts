@@ -56,6 +56,8 @@ export const handleGetMyReviews = async (
     };
     const userId = 1;
     const reviews = await getMyReviews(userId, query);
+
+    res.status(StatusCodes.OK).json({ result: reviews });
   } catch (err) {
     next(err);
   }
