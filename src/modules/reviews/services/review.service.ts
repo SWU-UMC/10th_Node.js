@@ -3,6 +3,7 @@ import {
   addReview,
   getReview,
   getAllStoreReviews,
+  getAllMyReviews,
 } from "../repositories/review.repository.js";
 
 // 리뷰 추가
@@ -24,8 +25,17 @@ export const createReview = async (
   return review;
 };
 
-// 리뷰 조회
-export const getReviews = async (storeId: number, query: getReviewsQuery) => {
+// 가게 리뷰 조회
+export const getStoreReviews = async (
+  storeId: number,
+  query: getReviewsQuery,
+) => {
   const reviews = await getAllStoreReviews(storeId, query);
+  return reviews;
+};
+
+// 내가 작성한 리뷰 조회
+export const getMyReviews = async (userId: number, query: getReviewsQuery) => {
+  const reviews = await getAllMyReviews(userId, query);
   return reviews;
 };

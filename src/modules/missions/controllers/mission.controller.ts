@@ -33,7 +33,7 @@ export const handleMemberMission = async (
   console.log("도전 중인 미션에 추가하려합니다!");
   console.log("body: ", req.body);
 
-  const userId = 4;
+  const userId = 1;
   const missionId = Number(req.params.missionId);
   const memberMission = await createMemberMission(userId, missionId);
 

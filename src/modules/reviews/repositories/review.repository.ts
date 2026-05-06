@@ -28,7 +28,7 @@ export const getReview = async (reviewId: number): Promise<any | null> => {
   return await prisma.review.findFirstOrThrow({ where: { id: reviewId } });
 };
 
-// 리뷰들 조회하기
+// 가게 리뷰들 조회하기
 export const getAllStoreReviews = async (
   storeId: number,
   query: getReviewsQuery,
@@ -45,6 +45,31 @@ export const getAllStoreReviews = async (
       store: true,
     },
     where: { storeId },
+    skip: offset,
+    take: limit,
+    orderBy: { id: "asc" },
+  });
+
+  return reviews;
+};
+
+// 내가 작성한 리뷰들 조회하기
+export const getAllMyReviews = async (
+  userId: number,
+  query: getReviewsQuery,
+) => {
+  const page = query.page || 1;
+  const limit = query.limit || 10;
+  const offset = (page - 1) * limit;
+  const reviews = await prisma.review.findMany({
+    select: {
+      id: true,
+      body: true,
+      rate: true,
+      user: true,
+      store: true,
+    },
+    where: { userId },
     skip: offset,
     take: limit,
     orderBy: { id: "asc" },
