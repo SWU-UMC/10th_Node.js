@@ -5,6 +5,7 @@ import {
   createMemberMission,
   getMyMissions,
   successMission,
+  getStoreMissions,
 } from "../services/mission.service.js";
 import { createMissionRequest } from "../dtos/mission.dto.js";
 
@@ -17,11 +18,7 @@ export const handleCreateMission = async (
   console.log("미션을 추가하려합니다!");
   console.log("body: ", req.body);
 
-  const storeId = 1;
-  const mission = await createMission(
-    storeId,
-    req.body as createMissionRequest,
-  );
+  const mission = await createMission(req.body as createMissionRequest);
 
   res.status(StatusCodes.OK).json({ result: mission });
 };
@@ -69,4 +66,20 @@ export const handleSuccessMission = async (
   const mission = await successMission(userId, missionId);
 
   res.status(StatusCodes.OK).json({ result: mission });
+};
+
+// 특정 가게의 미션 목록 조회
+export const handleGetStoreMission = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const storeId = Number(req.params.storeId);
+  const query = {
+    page: Number(req.query.page) || 1,
+    limit: Number(req.query.limit) || 10,
+  };
+  const missions = await getStoreMissions(storeId, query);
+
+  res.status(StatusCodes.OK).json({ result: missions });
 };

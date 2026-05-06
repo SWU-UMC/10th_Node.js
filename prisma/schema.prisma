@@ -42,6 +42,7 @@ model Store {
   foodCategory  FoodCategory  @relation(fields: [foodCategoryId], references: [id])
   foodCategoryId  Int @map("food_category_id")
   reviews   Review[]
+  missions  Mission[]
 }
 
 model Mission {
@@ -51,6 +52,8 @@ model Mission {
   reward    Int       @db.Int
   deadline  DateTime? @db.Date
   bossNum   Int?      @db.Int
+  store     Store     @relation(fields: [storeId],references: [id])
+  storeId   Int       @map("store_id")
   memberMission MemberMission[]
 }
 

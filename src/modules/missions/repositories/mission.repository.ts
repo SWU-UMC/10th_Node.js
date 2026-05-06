@@ -3,9 +3,9 @@ import { getMissionsQuery } from "../../missions/dtos/mission.dto.js";
 import { createMissionRequest } from "../dtos/mission.dto.js";
 
 export const addMission = async (
-  storeId: number,
   data: createMissionRequest,
 ): Promise<any | null> => {
+  const storeId = data.storeId;
   // 가게 존재하는지 확인 없으면 에러
   await prisma.store.findFirstOrThrow({
     where: { id: storeId },
@@ -16,6 +16,7 @@ export const addMission = async (
       title: data.title,
       body: data.body,
       reward: data.reward,
+      storeId,
     },
   });
   return created.id;
@@ -58,6 +59,9 @@ export const getAllMyMissions = async (
   userId: number,
   query: getMissionsQuery,
 ) => {
+  // 유저 존재하는지 확인 없으면 에러
+  await prisma.user.findFirstOrThrow({ where: { id: userId } });
+
   const page = query.page || 1;
   const limit = query.limit || 10;
   const offset = (page - 1) * limit;
@@ -94,4 +98,31 @@ export const updateSuccessMission = async (memberMissionId: number) => {
     data: { status: "SUCCESS" },
   });
   return mission;
+};
+
+// 특정 가게의 미션 목록 조회
+export const getAllStoreMissions = async (
+  storeId: number,
+  query: getMissionsQuery,
+) => {
+  // 가게 존재하는 확인, 없으면 에러
+  await prisma.store.findFirstOrThrow({ where: { id: storeId } });
+
+  const page = query.page || 1;
+  const limit = query.limit || 10;
+  const offset = (page - 1) * limit;
+  const missions = await prisma.mission.findMany({
+    select: {
+      id: true,
+      title: true,
+      body: true,
+      reward: true,
+      store: true,
+    },
+    where: { storeId },
+    skip: offset,
+    take: limit,
+    orderBy: { id: "asc" },
+  });
+  return missions;
 };

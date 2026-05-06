@@ -8,17 +8,16 @@ import {
   getAllMyMissions,
   getMemberMissionId,
   updateSuccessMission,
+  getAllStoreMissions,
 } from "../repositories/mission.repository.js";
 
 // 미션 추가
-export const createMission = async (
-  storeId: number,
-  data: createMissionRequest,
-) => {
-  const missionId = await addMission(storeId, {
+export const createMission = async (data: createMissionRequest) => {
+  const missionId = await addMission({
     title: data.title,
     body: data.body,
     reward: data.reward,
+    storeId: data.storeId,
   });
 
   if (missionId === null) {
@@ -58,4 +57,13 @@ export const successMission = async (userId: number, missionId: number) => {
   const memberMissionId = await getMemberMissionId(userId, missionId);
   const mission = await updateSuccessMission(memberMissionId);
   return mission;
+};
+
+// 특정 가게 미션 조회
+export const getStoreMissions = async (
+  storeId: number,
+  query: getMissionsQuery,
+) => {
+  const missions = await getAllStoreMissions(storeId, query);
+  return missions;
 };
