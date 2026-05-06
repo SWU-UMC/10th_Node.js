@@ -78,3 +78,20 @@ export const getAllMyMissions = async (
   });
   return missions;
 };
+
+// userId와 missionId로 memberMissionId 조회
+export const getMemberMissionId = async (userId: number, missionId: number) => {
+  const mission = await prisma.memberMission.findFirstOrThrow({
+    where: { userId, missionId },
+  });
+  return mission.id;
+};
+
+// 미션 진행 완료로 바꾸기
+export const updateSuccessMission = async (memberMissionId: number) => {
+  const mission = await prisma.memberMission.update({
+    where: { id: memberMissionId },
+    data: { status: "SUCCESS" },
+  });
+  return mission;
+};

@@ -4,6 +4,7 @@ import {
   createMission,
   createMemberMission,
   getMyMissions,
+  successMission,
 } from "../services/mission.service.js";
 import { createMissionRequest } from "../dtos/mission.dto.js";
 
@@ -55,4 +56,17 @@ export const handleGetMyMissions = async (
   const missions = await getMyMissions(userId, query);
 
   res.status(StatusCodes.OK).json({ result: missions });
+};
+
+// 미션 진행 완료로 바꾸기
+export const handleSuccessMission = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const userId = 1;
+  const missionId = Number(req.params.missionId);
+  const mission = await successMission(userId, missionId);
+
+  res.status(StatusCodes.OK).json({ result: mission });
 };

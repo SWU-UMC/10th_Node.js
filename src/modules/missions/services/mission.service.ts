@@ -6,6 +6,8 @@ import {
   addMemberMission,
   getMemberMission,
   getAllMyMissions,
+  getMemberMissionId,
+  updateSuccessMission,
 } from "../repositories/mission.repository.js";
 
 // 미션 추가
@@ -49,4 +51,11 @@ export const getMyMissions = async (
 ) => {
   const missions = await getAllMyMissions(userId, query);
   return missions;
+};
+
+// 미션 진행 완료로 바꾸기
+export const successMission = async (userId: number, missionId: number) => {
+  const memberMissionId = await getMemberMissionId(userId, missionId);
+  const mission = await updateSuccessMission(memberMissionId);
+  return mission;
 };
