@@ -3,10 +3,19 @@ import express, { Express, Request, Response } from "express";
 import cors from "cors";
 import {
   handleUserSignUp,
-  handleAddReview,
+
+} from "./modules/users/controllers/user.controller.js";
+import { handleListStoreReviews } from "./modules/stores/controllers/store.controller.js";
+import {
   handleChallengeMission,
   handleAddMission,
-} from "./modules/users/controllers/user.controller.js";
+  handleListUserMissions,
+  handleListStoreMissions,
+} from "./modules/missions/controllers/mission.controller.js";
+import {
+  handleAddReview,
+  handleListUserReviews,
+} from "./modules/reviews/controllers/review.controller.js";
 
 // 1. 환경 변수 설정
 dotenv.config();
@@ -29,6 +38,10 @@ app.post("/api/v1/users", handleUserSignUp);
 app.post("/api/v1/reviews", handleAddReview);
 app.post("/api/v1/missions/challenge", handleChallengeMission);
 app.post("/api/v1/missions", handleAddMission);
+app.get("/api/v1/stores/:storeId/reviews", handleListStoreReviews);
+app.get("/api/v1/users/:userId/reviews", handleListUserReviews);
+app.get("/api/v1/stores/:storeId/missions", handleListStoreMissions);
+app.get("/api/v1/users/:userId/missions", handleListUserMissions);
 
 // 4. 서버 시작
 app.listen(port, () => {

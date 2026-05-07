@@ -6,11 +6,8 @@ import {
   getUserPreferencesByUserId,
   setPreference,
   getStore,
-  createReview,
-  getUserMission,
-  createUserMission,
-  createMission,
 } from "../repositories/user.repository.js";
+
 import bcrypt from "bcrypt";
 
 
@@ -38,37 +35,7 @@ export const userSignUp = async (data: UserSignUpRequest) => {
 
   const user = await getUser(joinUserId);
   const preferences = await getUserPreferencesByUserId(joinUserId);
-  
+
   return responseFromUser({ user, preferences });
 };
 
-
-export const addReview = async (userId: number, data: any) => {
-  const store = await getStore(data.storeId);
-
-  if (!store) {
-    throw new Error("존재하지 않는 가게입니다.");
-  }
-
-  await createReview(userId, data);
-};
-
-export const challengeMission = async (userId: number, missionId: number) => {
-  const existing = await getUserMission(userId, missionId);
-
-  if (existing) {
-    throw new Error("이미 도전 중인 미션입니다.");
-  }
-
-  await createUserMission(userId, missionId);
-};
-
-export const addMission = async (data: any) => {
-  const store = await getStore(data.storeId);
-
-  if (!store) {
-    throw new Error("존재하지 않는 가게입니다.");
-  }
-
-  await createMission(data);
-};
