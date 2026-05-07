@@ -1,73 +1,56 @@
-# 10th_Node.js
+## 미션 기록
 
+### 미션 중간 과정
 
-### Git 작업 순서
+### bcrypt 설치 과정
 
-본인의 브랜치에서만 작업하고, `main` 브랜치는 직접 수정하지 않습니다.
+![image](./src/images/image%20(2).png)
 
-#### 1. 현재 브랜치 확인
-```sh
-git branch
-```
+### 코드와 이름 불일치로 에러 발생 → DB 필드명 수정
 
-#### 2. 변경 사항 확인
-```sh
-git status
-```
+![image](./src/images/image%20(3).png)
 
-#### 3. 변경된 파일 추가
-```sh
-git add .
-```
+### 결과 스크린샷
 
-#### 4. 커밋 메시지 작성
-```sh
-git commit-m "Commit Message"
-```
+### 비밀번호 해싱 및 회원가입 성공
+![image](./src/images/image%20(4).png)
 
-#### 5. 원격 저장소에 본인 브랜치로 푸시
-```sh
-git push origin <브랜치명>
-```
+회원가입 성공
 
-### Commit Convention
+![image](./src/images/image%20(5).png)
 
-커밋 메시지는 `타입: n주차 미션 설명 #이슈넘버`의 형식을 갖추어 작성합니다.
+비밀번호 해싱 성공
 
-| 타입      | 설명                           |
-|-----------|--------------------------------|
-| feat      | 새로운 기능 추가               |
-| fix       | 버그 수정                      |
-| refactor  | 코드 리팩토링                  |
-| docs      | 문서 수정 (README 등)          |
-| style     | 코드 스타일 변경 (세미콜론 추가 등)|
-| chore     | 빌드 및 패키지 설정 변경       |
-| test      | 테스트 코드 추가               |
+![image](./src/images/image%20(12).png)
 
-#### Commit Example
-```sh
-git commit -m "feat: 4주차 미션 엔터티 작성 #1"
-git commit -m "fix: 5주차 미션 연관관계 수정 #2"
-```
+이메일 중복 검사 성공
 
-### Branch Naming Convention
+---
 
-브랜치는 `닉네임/weekN` 형식으로 생성합니다.
+## 1-2 가게에 리뷰 추가하기
 
-| 규칙 | 설명 | 예시 |
-| --- | --- | --- |
-| 닉네임 | GitHub 닉네임 또는 팀 내 별칭 사용 | `naru`, `leeseo` |
-| weekN | 미션 주차 번호 (`N`은 숫자) | `week1`, `week4` |
-| 구분자 | 슬래시(`/`)로 닉네임과 주차 구분 | `naru/week4` |
+![image](./src/images/image%20(6).png)
 
-#### Commit Example
-- `wony/week4` -> 워니의 4주차 미션 브랜치
+리뷰 추가하기 성공
 
-### PR Convention
+---
 
-- Pull Request(PR)은 미션 별로 생성합니다.
-- PR 제목은 `n주차 미션 [닉네임]` 형식으로 작성합니다.
-- 스터디원끼리 승인한 후, main 브랜치로 Merge 합니다.
+## 1-3 가게에 미션 추가하기
 
-#### PR Example
-- 1주차 미션 [워니]
+![image](./src/images/image%20(7).png)
+
+![image](./src/images/image%20(8).png)
+
+가게에 미션 추가하기 성공
+
+---
+
+## 1-4 가게의 미션을 도전 중인 미션에 추가
+
+![image](./src/images/image%20(9).png)
+
+![image](./src/images/image%20(10).png)
+
+![image](./src/images/image%20(11).png)
+
+미션 도전 / 도전 중일 시 false 확인 성공
