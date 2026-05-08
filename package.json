@@ -1,0 +1,33 @@
+{
+  "name": "10th_node",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "본인의 브랜치에서만 작업하고, `main` 브랜치는 직접 수정하지 않습니다.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx prisma generate && tsc && node dist/index.js",
+    "dev": "nodemon --watch src --ext ts --ignore src/generated/** --ignore prisma/** --exec \"tsx src/index.ts\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SWU-UMC/10th_Node.js.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SWU-UMC/10th_Node.js/issues"
+  },
+  "homepage": "https://github.com/SWU-UMC/10th_Node.js#readme",
+  "dependencies": {
+    "@prisma/adapter-mariadb": "^7.8.0",
+    "@prisma/client": "^6.19.3",
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.4.2",
+    "prisma": "^6.19.3"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0"
+  }
+}
