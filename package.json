@@ -1,0 +1,38 @@
+{
+  "name": "10th_node",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "본인의 브랜치에서만 작업하고, `main` 브랜치는 직접 수정하지 않습니다.",
+  "main": "index.js",
+  "scripts": {
+    "start": "tsoa spec-and-routes && tsx src/index.ts",
+    "dev": "tsoa spec-and-routes && nodemon --exec tsx src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SWU-UMC/10th_Node.js.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SWU-UMC/10th_Node.js/issues"
+  },
+  "homepage": "https://github.com/SWU-UMC/10th_Node.js#readme",
+  "dependencies": {
+    "@prisma/adapter-mariadb": "^7.8.0",
+    "@prisma/client": "^6.19.3",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/morgan": "^1.9.10",
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "morgan": "^1.10.1",
+    "prisma": "^6.19.3",
+    "tsoa": "^7.0.0-alpha.0"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^6.0.0"
+  }
+}
