@@ -1,16 +1,19 @@
 import { Controller, Route, Post, Body, Tags, SuccessResponse } from "tsoa";
-import { bodyToUser, UserSignUpRequest } from "../dtos/user.dto.js";
+import { UserSignUpRequest, UserSignUpResponse } from "../dtos/user.dto.js";
 import { userSignUp } from "../services/user.service.js";
+import { ApiResponse, success } from "../../../common/responses/response.js";
 
 @Route("users")
 @Tags("Users")
 export class UserController extends Controller {
-  // 회원가입
-  @Post("signup")
+  @Post("signup") // 엔드포인트 정의
   @SuccessResponse("200", "OK")
-  public async signUp(@Body() body: UserSignUpRequest): Promise<{ result: unknown }> {
+  public async handleUserSignUp(
+    @Body() body: UserSignUpRequest,
+  ): Promise<ApiResponse<UserSignUpResponse>> {
     console.log("회원가입을 요청했습니다!");
-    const user = await userSignUp(bodyToUser(body));
-    return { result: user };
+    console.log("body:", body);
+    const user = await userSignUp(body); //서비스 로직 호웍
+    return success(user); //성공 응답 보내기
   }
 }

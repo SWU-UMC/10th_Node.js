@@ -1,4 +1,4 @@
-import { UserData, responseFromUser } from "../dtos/user.dto.js";
+import { UserSignUpRequest, responseFromUser } from "../dtos/user.dto.js";
 import {
   addUser,
   getUser,
@@ -6,14 +6,14 @@ import {
   setPreference,
 } from "../repositories/user.repository.js";
 
-export const userSignUp = async (data: UserData) => {
+export const userSignUp = async (data: UserSignUpRequest) => {
   const joinUserId = await addUser({
     email: data.email,
     name: data.name,
     gender: data.gender,
-    birth: data.birth, // 이미 Date 객체입니다. 
-    address: data.address,
-    detailAddress: data.detailAddress,
+    birth: new Date(data.birth),
+    address: data.address || "",
+    detailAddress: data.detailAddress || "",
     phoneNumber: data.phoneNumber,
   });
 
