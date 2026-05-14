@@ -29,7 +29,7 @@ export const responseFromUser = ({
 }: {
   user: any;
   preferences: any[];
-}) => {
+}): UserSignUpResponse => {
   return {
     id: user.id,
     email: user.email,
@@ -47,7 +47,20 @@ export const responseFromUser = ({
   };
 };
 
-// 4. 요청받은 데이터를 우리 시스템에 맞는 데이터로 변환해주는 함수입니다. 
+// 4. 회원가입 응답 데이터 타입입니다.
+export interface UserSignUpResponse {
+  id: number;
+  email: string;
+  name: string;
+  gender: string;
+  birth: Date;
+  address: string;
+  detailAddress: string;
+  phoneNumber: string;
+  preferences: { id: number; foodCategoryId: number; name: string }[];
+}
+
+// 5. 요청받은 데이터를 우리 시스템에 맞는 데이터로 변환해주는 함수입니다. 
 export const bodyToUser = (body: UserSignUpRequest): UserData => {
   const birth = new Date(body.birth); //날짜 변환
 

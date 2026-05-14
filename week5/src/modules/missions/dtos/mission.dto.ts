@@ -16,8 +16,17 @@ export const bodyToMission = (body: MissionAddRequest) => {
   };
 };
 
+
+export interface MissionAddResponse {
+  id: number;
+  storeId: number;
+  reward: number;
+  deadline: Date;
+  missionSpec: string;
+}
+
 // responseFromMission: DB 결과를 응답 형식으로 변환
-export const responseFromMission = (mission: any) => {
+export const responseFromMission = (mission: any): MissionAddResponse => {
   return {
     id: mission.id,
     storeId: mission.store_id,

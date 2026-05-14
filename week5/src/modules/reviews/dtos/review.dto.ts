@@ -16,8 +16,18 @@ export const bodyToReview = (body: ReviewAddRequest) => {
   };
 };
 
+// 리뷰 추가 응답 타입
+export interface ReviewAddResponse {
+  id: number;
+  userId: number;
+  storeId: number;
+  body: string;
+  score: number;
+  createdAt: Date;
+}
+
 // responseFromReview: DB 결과를 응답 형식으로 변환
-export const responseFromReview = (review: any) => {
+export const responseFromReview = (review: any): ReviewAddResponse => {
   return {
     id: review.id,
     userId: review.user_id,

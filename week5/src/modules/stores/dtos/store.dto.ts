@@ -14,8 +14,17 @@ export const bodyToStore = (body: StoreAddRequest) => {
   };
 };
 
+// 가게 추가 응답 타입
+export interface StoreAddResponse {
+  id: number;
+  regionId: number;
+  name: string;
+  address: string;
+  score: number;
+}
+
 // responseFromStore: DB 결과를 응답 형식으로 변환
-export const responseFromStore = (store: any) => {
+export const responseFromStore = (store: any): StoreAddResponse => {
   return {
     id: store.id,
     regionId: store.region_id,

@@ -12,8 +12,17 @@ export const bodyToUserMission = (body: UserMissionAddRequest) => {
   };
 };
 
+// 미션 도전 응답 타입
+export interface UserMissionAddResponse {
+  id: number;
+  userId: number;
+  missionId: number;
+  status: string;
+  createdAt: Date;
+}
+
 // responseFromUserMission: DB 결과를 응답 형식으로 변환
-export const responseFromUserMission = (userMission: any) => {
+export const responseFromUserMission = (userMission: any): UserMissionAddResponse => {
   return {
     id: userMission.id,
     userId: userMission.user_id,
