@@ -5,6 +5,7 @@ dotenv.config();
 import express, { Express, NextFunction, Request, Response } from "express";
 import cors from "cors";
 import morgan from "morgan";
+import cookieParser from "cookie-parser";
 import { RegisterRoutes } from "./routes.js";
 import { AppError } from "./common/errors/app.error.js";
 
@@ -39,6 +40,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 // 미들웨어 설정
 app.use(morgan("dev"));         
 app.use(cors());
+app.use(cookieParser());        
 app.use(express.static('public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
