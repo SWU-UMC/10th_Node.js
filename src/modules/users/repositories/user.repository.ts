@@ -1,4 +1,5 @@
 import { prisma } from "../../../db.config.js";
+import { getReviewsQuery } from "../../reviews/dtos/review.dto.js";
 
 // 1. User 데이터 삽입
 export const addUser = async (data: any): Promise<number | null> => {
@@ -52,4 +53,29 @@ export const getUserPreferencesByUserId = async (
     },
     orderBy: { foodCategoryId: "asc" },
   });
+};
+
+// 내가 작성한 리뷰들 조회하기
+export const getAllMyReviews = async (
+  userId: number,
+  query: getReviewsQuery,
+) => {
+  const page = query.page || 1;
+  const limit = query.limit || 10;
+  const offset = (page - 1) * limit;
+  const reviews = await prisma.review.findMany({
+    select: {
+      id: true,
+      body: true,
+      rate: true,
+      user: true,
+      store: true,
+    },
+    where: { userId },
+    skip: offset,
+    take: limit,
+    orderBy: { id: "asc" },
+  });
+
+  return reviews;
 };

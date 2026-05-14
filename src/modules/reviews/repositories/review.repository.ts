@@ -7,9 +7,11 @@ export const addReview = async (
   storeId: number,
   data: createReviewRequest,
 ): Promise<number | null> => {
-  await prisma.store.findFirstOrThrow({
+  const store = await prisma.store.findFirst({
     where: { id: storeId },
   });
+
+  if (!store) return null;
 
   const created = await prisma.review.create({
     data: {
@@ -45,31 +47,6 @@ export const getAllStoreReviews = async (
       store: true,
     },
     where: { storeId },
-    skip: offset,
-    take: limit,
-    orderBy: { id: "asc" },
-  });
-
-  return reviews;
-};
-
-// 내가 작성한 리뷰들 조회하기
-export const getAllMyReviews = async (
-  userId: number,
-  query: getReviewsQuery,
-) => {
-  const page = query.page || 1;
-  const limit = query.limit || 10;
-  const offset = (page - 1) * limit;
-  const reviews = await prisma.review.findMany({
-    select: {
-      id: true,
-      body: true,
-      rate: true,
-      user: true,
-      store: true,
-    },
-    where: { userId },
     skip: offset,
     take: limit,
     orderBy: { id: "asc" },

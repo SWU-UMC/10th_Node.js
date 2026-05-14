@@ -3,8 +3,8 @@ import {
   addReview,
   getReview,
   getAllStoreReviews,
-  getAllMyReviews,
 } from "../repositories/review.repository.js";
+import { StoreNotFoundError } from "../../../common/errors/error.js";
 
 // 리뷰 추가
 export const createReview = async (
@@ -18,7 +18,7 @@ export const createReview = async (
   });
 
   if (reviewId === null) {
-    throw new Error("존재하지 않는 가게입니다.");
+    throw new StoreNotFoundError("존재하지 않는 가게입니다.");
   }
 
   const review = await getReview(reviewId);
@@ -31,11 +31,5 @@ export const getStoreReviews = async (
   query: getReviewsQuery,
 ) => {
   const reviews = await getAllStoreReviews(storeId, query);
-  return reviews;
-};
-
-// 내가 작성한 리뷰 조회
-export const getMyReviews = async (userId: number, query: getReviewsQuery) => {
-  const reviews = await getAllMyReviews(userId, query);
   return reviews;
 };

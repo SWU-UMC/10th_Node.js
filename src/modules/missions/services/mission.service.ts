@@ -10,6 +10,7 @@ import {
   updateSuccessMission,
   getAllStoreMissions,
 } from "../repositories/mission.repository.js";
+import { StoreNotFoundError } from "../../../common/errors/error.js";
 
 // 미션 추가
 export const createMission = async (data: createMissionRequest) => {
@@ -21,7 +22,7 @@ export const createMission = async (data: createMissionRequest) => {
   });
 
   if (missionId === null) {
-    throw new Error("존재하지 않는 가게입니다.");
+    throw new StoreNotFoundError("존재하지 않는 가게입니다.", data);
   }
 
   const mission = await getMission(missionId);

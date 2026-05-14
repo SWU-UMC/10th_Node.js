@@ -7,9 +7,10 @@ export const addMission = async (
 ): Promise<any | null> => {
   const storeId = data.storeId;
   // 가게 존재하는지 확인 없으면 에러
-  await prisma.store.findFirstOrThrow({
+  const store = await prisma.store.findFirst({
     where: { id: storeId },
   });
+  if (!store) return null;
 
   const created = await prisma.mission.create({
     data: {
