@@ -10,6 +10,10 @@
     "moduleResolution": "NodeNext", 
     "lib": ["ESNext"],            // 최신 자바스크립트 표준 기능을 사용할 수 있게 해줘요.
 
+    /* 데코레이터 설정 (TSOA 필수!) */
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+
     /* 엄격한 검사 옵션 (에러를 미리 잡는 핵심!) */
     "strict": true,               
     "noUncheckedIndexedAccess": true, 
