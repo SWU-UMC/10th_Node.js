@@ -7,6 +7,101 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
+			"UserSignUpResponse": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"email": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"gender": {
+						"type": "string"
+					},
+					"birth": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"address": {
+						"type": "string"
+					},
+					"detailAddress": {
+						"type": "string"
+					},
+					"phoneNumber": {
+						"type": "string"
+					},
+					"preferences": {
+						"items": {
+							"properties": {
+								"name": {
+									"type": "string"
+								},
+								"foodCategoryId": {
+									"type": "number",
+									"format": "double"
+								},
+								"id": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"name",
+								"foodCategoryId",
+								"id"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"id",
+					"email",
+					"name",
+					"gender",
+					"birth",
+					"address",
+					"detailAddress",
+					"phoneNumber",
+					"preferences"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ApiResponse_UserSignUpResponse_": {
+				"properties": {
+					"resultType": {
+						"type": "string",
+						"enum": [
+							"SUCCESS"
+						],
+						"nullable": false
+					},
+					"error": {
+						"type": "number",
+						"enum": [
+							null
+						],
+						"nullable": true
+					},
+					"data": {
+						"$ref": "#/components/schemas/UserSignUpResponse"
+					}
+				},
+				"required": [
+					"resultType",
+					"error",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"UserSignUpRequest": {
 				"properties": {
 					"email": {
@@ -49,6 +144,65 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"StoreAddResponse": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"regionId": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"address": {
+						"type": "string"
+					},
+					"score": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"id",
+					"regionId",
+					"name",
+					"address",
+					"score"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ApiResponse_StoreAddResponse_": {
+				"properties": {
+					"resultType": {
+						"type": "string",
+						"enum": [
+							"SUCCESS"
+						],
+						"nullable": false
+					},
+					"error": {
+						"type": "number",
+						"enum": [
+							null
+						],
+						"nullable": true
+					},
+					"data": {
+						"$ref": "#/components/schemas/StoreAddResponse"
+					}
+				},
+				"required": [
+					"resultType",
+					"error",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"StoreAddRequest": {
 				"properties": {
 					"regionId": {
@@ -65,6 +219,71 @@
 				"required": [
 					"regionId",
 					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ReviewAddResponse": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"userId": {
+						"type": "number",
+						"format": "double"
+					},
+					"storeId": {
+						"type": "number",
+						"format": "double"
+					},
+					"body": {
+						"type": "string"
+					},
+					"score": {
+						"type": "number",
+						"format": "double"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"id",
+					"userId",
+					"storeId",
+					"body",
+					"score",
+					"createdAt"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ApiResponse_ReviewAddResponse_": {
+				"properties": {
+					"resultType": {
+						"type": "string",
+						"enum": [
+							"SUCCESS"
+						],
+						"nullable": false
+					},
+					"error": {
+						"type": "number",
+						"enum": [
+							null
+						],
+						"nullable": true
+					},
+					"data": {
+						"$ref": "#/components/schemas/ReviewAddResponse"
+					}
+				},
+				"required": [
+					"resultType",
+					"error",
+					"data"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -96,6 +315,66 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"UserMissionAddResponse": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"userId": {
+						"type": "number",
+						"format": "double"
+					},
+					"missionId": {
+						"type": "number",
+						"format": "double"
+					},
+					"status": {
+						"type": "string"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					}
+				},
+				"required": [
+					"id",
+					"userId",
+					"missionId",
+					"status",
+					"createdAt"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ApiResponse_UserMissionAddResponse_": {
+				"properties": {
+					"resultType": {
+						"type": "string",
+						"enum": [
+							"SUCCESS"
+						],
+						"nullable": false
+					},
+					"error": {
+						"type": "number",
+						"enum": [
+							null
+						],
+						"nullable": true
+					},
+					"data": {
+						"$ref": "#/components/schemas/UserMissionAddResponse"
+					}
+				},
+				"required": [
+					"resultType",
+					"error",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"UserMissionAddRequest": {
 				"properties": {
 					"userId": {
@@ -110,6 +389,66 @@
 				"required": [
 					"userId",
 					"missionId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"MissionAddResponse": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"storeId": {
+						"type": "number",
+						"format": "double"
+					},
+					"reward": {
+						"type": "number",
+						"format": "double"
+					},
+					"deadline": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"missionSpec": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"id",
+					"storeId",
+					"reward",
+					"deadline",
+					"missionSpec"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ApiResponse_MissionAddResponse_": {
+				"properties": {
+					"resultType": {
+						"type": "string",
+						"enum": [
+							"SUCCESS"
+						],
+						"nullable": false
+					},
+					"error": {
+						"type": "number",
+						"enum": [
+							null
+						],
+						"nullable": true
+					},
+					"data": {
+						"$ref": "#/components/schemas/MissionAddResponse"
+					}
+				},
+				"required": [
+					"resultType",
+					"error",
+					"data"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -150,20 +489,14 @@
 	"paths": {
 		"/users/signup": {
 			"post": {
-				"operationId": "SignUp",
+				"operationId": "HandleUserSignUp",
 				"responses": {
 					"200": {
 						"description": "OK",
 						"content": {
 							"application/json": {
 								"schema": {
-									"properties": {
-										"result": {}
-									},
-									"required": [
-										"result"
-									],
-									"type": "object"
+									"$ref": "#/components/schemas/ApiResponse_UserSignUpResponse_"
 								}
 							}
 						}
@@ -195,13 +528,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"properties": {
-										"result": {}
-									},
-									"required": [
-										"result"
-									],
-									"type": "object"
+									"$ref": "#/components/schemas/ApiResponse_StoreAddResponse_"
 								}
 							}
 						}
@@ -233,13 +560,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"properties": {
-										"result": {}
-									},
-									"required": [
-										"result"
-									],
-									"type": "object"
+									"$ref": "#/components/schemas/ApiResponse_ReviewAddResponse_"
 								}
 							}
 						}
@@ -271,13 +592,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"properties": {
-										"result": {}
-									},
-									"required": [
-										"result"
-									],
-									"type": "object"
+									"$ref": "#/components/schemas/ApiResponse_UserMissionAddResponse_"
 								}
 							}
 						}
@@ -309,13 +624,7 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"properties": {
-										"result": {}
-									},
-									"required": [
-										"result"
-									],
-									"type": "object"
+									"$ref": "#/components/schemas/ApiResponse_MissionAddResponse_"
 								}
 							}
 						}
