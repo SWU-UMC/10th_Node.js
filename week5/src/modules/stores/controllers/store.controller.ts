@@ -1,10 +1,16 @@
-import { Request, Response, NextFunction } from "express";
-import { StatusCodes } from "http-status-codes";
+import { Controller, Route, Post, Body, Tags, SuccessResponse } from "tsoa";
 import { bodyToStore, StoreAddRequest } from "../dtos/store.dto.js";
 import { storeAdd } from "../services/store.service.js";
 
-// 특정 지역에 가게 추가하기
-export const handleStoreAdd = async (req: Request, res: Response, next: NextFunction) => {
-  const store = await storeAdd(bodyToStore(req.body as StoreAddRequest));
-  res.status(StatusCodes.CREATED).json({ result: store });
-};
+@Route("stores")
+@Tags("Stores")
+export class StoreController extends Controller {
+  // 특정 지역에 가게 추가하기
+  @Post()
+  @SuccessResponse("201", "Created")
+  public async addStore(@Body() body: StoreAddRequest): Promise<{ result: unknown }> {
+    this.setStatus(201);
+    const store = await storeAdd(bodyToStore(body));
+    return { result: store };
+  }
+}

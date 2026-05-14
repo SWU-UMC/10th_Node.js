@@ -1,10 +1,16 @@
-import { Request, Response, NextFunction } from "express";
-import { StatusCodes } from "http-status-codes";
+import { Controller, Route, Post, Body, Tags, SuccessResponse } from "tsoa";
 import { bodyToReview, ReviewAddRequest } from "../dtos/review.dto.js";
 import { reviewAdd } from "../services/review.service.js";
 
-// 가게에 리뷰 추가하기
-export const handleReviewAdd = async (req: Request, res: Response, next: NextFunction) => {
-  const review = await reviewAdd(bodyToReview(req.body as ReviewAddRequest));
-  res.status(StatusCodes.CREATED).json({ result: review });
-};
+@Route("reviews")
+@Tags("Reviews")
+export class ReviewController extends Controller {
+  // 가게에 리뷰 추가하기
+  @Post()
+  @SuccessResponse("201", "Created")
+  public async addReview(@Body() body: ReviewAddRequest): Promise<{ result: unknown }> {
+    this.setStatus(201);
+    const review = await reviewAdd(bodyToReview(body));
+    return { result: review };
+  }
+}
