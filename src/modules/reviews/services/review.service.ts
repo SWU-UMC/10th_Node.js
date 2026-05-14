@@ -31,5 +31,8 @@ export const getStoreReviews = async (
   query: getReviewsQuery,
 ) => {
   const reviews = await getAllStoreReviews(storeId, query);
+  if (reviews === null) {
+    throw new StoreNotFoundError("존재하지 않는 가게입니다.");
+  }
   return reviews;
 };

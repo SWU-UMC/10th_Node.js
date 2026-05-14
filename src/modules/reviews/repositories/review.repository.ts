@@ -35,6 +35,11 @@ export const getAllStoreReviews = async (
   storeId: number,
   query: getReviewsQuery,
 ) => {
+  const store = await prisma.store.findFirst({
+    where: { id: storeId },
+  });
+
+  if (!store) return null;
   const page = query.page || 1;
   const limit = query.limit || 10;
   const offset = (page - 1) * limit;
