@@ -5,16 +5,21 @@ import {
   Middlewares,
   Post,
   Request,
-  Res,
   Route,
   Tags,
   Query,
+  Path,
 } from "tsoa";
 import { UserSignUpRequest, UserSignUpResponse } from "../dtos/user.dto.js";
 import { userSignUp, getMyReviews } from "../services/user.service.js";
 import { ApiResponse, success } from "../../../common/responses/response.js";
 import { authorizeUser } from "../../../common/middlewares/auth.middleware.js";
 import { Request as ExpressRequest } from "express";
+import {
+  createMemberMission,
+  getMyMissions,
+  successMission,
+} from "../../missions/services/mission.service.js";
 
 @Route("users") // 라우트 경로
 @Tags("Users") // Swagger 태그
@@ -69,5 +74,30 @@ export class UserController extends Controller {
     const userId = 1;
     const reviews = await getMyReviews(userId, { page, limit });
     return success(reviews);
+  }
+  @Post("missions/{missionId}") // 가게의 미션을 도전 중인 미션에 추가하기
+  public async handleMemberMission(
+    @Path() missionId: number,
+  ): Promise<ApiResponse<any>> {
+    const userId = 1;
+    const memberMission = await createMemberMission(userId, missionId);
+    return success(memberMission);
+  }
+  @Get("missions") // 내가 진행 중인 미션 조회
+  public async handleGetMyMissions(
+    @Query() page: number = 1,
+    @Query() limit: number = 10,
+  ): Promise<ApiResponse<any>> {
+    const userId = 1;
+    const missions = await getMyMissions(userId, { page, limit });
+    return success(missions);
+  }
+  @Get("missions/{missionId}/success") // 미션 진행 완료로 바꾸기
+  public async handleSuccessMission(
+    @Path() missionId: number,
+  ): Promise<ApiResponse<any>> {
+    const userId = 1;
+    const mission = await successMission(userId, missionId);
+    return success(mission);
   }
 }

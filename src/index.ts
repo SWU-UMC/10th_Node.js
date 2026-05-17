@@ -5,13 +5,6 @@ import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import { RegisterRoutes } from "./generated/routes.js";
 import { AppError } from "./common/errors/app.error.js";
-import {
-  handleCreateMission,
-  handleMemberMission,
-  handleGetMyMissions,
-  handleSuccessMission,
-  handleGetStoreMission,
-} from "./modules/missions/controllers/mission.controller.js";
 
 // 1. 환경 변수 설정
 dotenv.config();
@@ -44,12 +37,6 @@ app.use(cookieParser());
 const router = express.Router();
 RegisterRoutes(router);
 app.use("/api/v1", router);
-
-app.post("/api/v1/missions", handleCreateMission); // 가게에 미션 추가하기
-app.post("/api/v1/users/missions/:missionId", handleMemberMission); // 가게의 미션을 도전 중인 미션에 추가하기
-app.get("/api/v1/users/missions", handleGetMyMissions); // 내가 진행 중인 미션 조회
-app.get("/api/v1/users/missions/:missionId/success", handleSuccessMission); // 미션 진행 완료로 바꾸기
-app.get("/api/v1/stores/:storeId/missions", handleGetStoreMission); // 특정 가게의 미션 조회
 
 // 전역 오류를 처리하기 위한 미들웨어
 app.use((err: AppError, req: Request, res: Response, next: NextFunction) => {

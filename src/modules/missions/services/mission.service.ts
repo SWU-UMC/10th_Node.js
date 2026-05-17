@@ -8,9 +8,11 @@ import {
   getAllMyMissions,
   getMemberMissionId,
   updateSuccessMission,
-  getAllStoreMissions,
 } from "../repositories/mission.repository.js";
-import { StoreNotFoundError } from "../../../common/errors/error.js";
+import {
+  MissionNotFoundError,
+  StoreNotFoundError,
+} from "../../../common/errors/error.js";
 
 // 미션 추가
 export const createMission = async (data: createMissionRequest) => {
@@ -37,7 +39,7 @@ export const createMemberMission = async (
   const memberMissionId = await addMemberMission(userId, missionId);
 
   if (memberMissionId === null) {
-    throw new Error("존재하지 않는 미션입니다.");
+    throw new MissionNotFoundError("존재하지 않는 미션입니다.");
   }
 
   const memberMission = await getMemberMission(memberMissionId);
@@ -56,15 +58,8 @@ export const getMyMissions = async (
 // 미션 진행 완료로 바꾸기
 export const successMission = async (userId: number, missionId: number) => {
   const memberMissionId = await getMemberMissionId(userId, missionId);
+  if (!memberMissionId)
+    throw new MissionNotFoundError("존재하지 않는 미션입니다.");
   const mission = await updateSuccessMission(memberMissionId);
   return mission;
-};
-
-// 특정 가게 미션 조회
-export const getStoreMissions = async (
-  storeId: number,
-  query: getMissionsQuery,
-) => {
-  const missions = await getAllStoreMissions(storeId, query);
-  return missions;
 };

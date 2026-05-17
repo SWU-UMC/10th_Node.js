@@ -34,7 +34,12 @@ export const addMemberMission = async (
   missionId: number,
 ): Promise<any | null> => {
   // 유저가 존재하는지 확인, 없으면 에러
-  await prisma.user.findFirstOrThrow({ where: { id: userId } });
+  const user = await prisma.user.findFirst({ where: { id: userId } });
+  if (!user) return null;
+
+  // 존재하는 미션인지 확인, 없으면 에러
+  const mission = await prisma.mission.findFirst({ where: { id: missionId } });
+  if (!mission) return null;
 
   const created = await prisma.memberMission.create({
     data: {
@@ -61,7 +66,8 @@ export const getAllMyMissions = async (
   query: getMissionsQuery,
 ) => {
   // 유저 존재하는지 확인 없으면 에러
-  await prisma.user.findFirstOrThrow({ where: { id: userId } });
+  const user = await prisma.user.findFirst({ where: { id: userId } });
+  if (!user) return null;
 
   const page = query.page || 1;
   const limit = query.limit || 10;
@@ -86,9 +92,10 @@ export const getAllMyMissions = async (
 
 // userId와 missionId로 memberMissionId 조회
 export const getMemberMissionId = async (userId: number, missionId: number) => {
-  const mission = await prisma.memberMission.findFirstOrThrow({
+  const mission = await prisma.memberMission.findFirst({
     where: { userId, missionId },
   });
+  if (!mission) return null;
   return mission.id;
 };
 
@@ -99,31 +106,4 @@ export const updateSuccessMission = async (memberMissionId: number) => {
     data: { status: "SUCCESS" },
   });
   return mission;
-};
-
-// 특정 가게의 미션 목록 조회
-export const getAllStoreMissions = async (
-  storeId: number,
-  query: getMissionsQuery,
-) => {
-  // 가게 존재하는 확인, 없으면 에러
-  await prisma.store.findFirstOrThrow({ where: { id: storeId } });
-
-  const page = query.page || 1;
-  const limit = query.limit || 10;
-  const offset = (page - 1) * limit;
-  const missions = await prisma.mission.findMany({
-    select: {
-      id: true,
-      title: true,
-      body: true,
-      reward: true,
-      store: true,
-    },
-    where: { storeId },
-    skip: offset,
-    take: limit,
-    orderBy: { id: "asc" },
-  });
-  return missions;
 };
