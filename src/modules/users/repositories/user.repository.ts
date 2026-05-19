@@ -54,7 +54,7 @@ export const getUserPreferencesByUserId = async (userId: number) => {
 
 
 export const getStore = async (storeId: number) => {
-  return await prisma.store.findFirst({ where: { id: storeId } });
+  return await prisma.store.findFirstOrThrow({ where: { id: storeId } });   
 };
 
 export const createReview = async (userId: number, data: any) => {
@@ -66,4 +66,3 @@ export const createReview = async (userId: number, data: any) => {
     }
   });
 };
-
