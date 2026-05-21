@@ -1,5 +1,6 @@
 import { AppError } from "./app.error.js";
 
+/** User 에러 */
 export class DuplicateUserEmailError extends AppError {
   constructor(message: string, data?: unknown) {
     super({
@@ -20,6 +21,8 @@ export class UserNotFoundError extends AppError {
     });
   }
 }
+
+/** Store 에러 */
 export class StoreNotFoundError extends AppError {
   constructor(message: string, data?: unknown) {
     super({
@@ -30,6 +33,8 @@ export class StoreNotFoundError extends AppError {
     });
   }
 }
+
+/** Mission 에러 */
 export class MissionNotFoundError extends AppError {
   constructor(message: string, data?: unknown) {
     super({

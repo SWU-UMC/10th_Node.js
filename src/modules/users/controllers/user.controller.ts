@@ -5,6 +5,7 @@ import {
   Middlewares,
   Post,
   Request,
+  Response,
   Route,
   Tags,
   Query,
@@ -24,12 +25,16 @@ import {
 @Route("users") // 라우트 경로
 @Tags("Users") // Swagger 태그
 export class UserController extends Controller {
+  /**
+   * 회원가입 API
+   * @summary 회원가입을 처리하는 엔드포인트입니다.
+   */
   @Post("signup") // 엔드포인트 정의
+  @Response<ApiResponse<UserSignUpResponse>>(200, " 회원가입 성공")
+  @Response<ApiResponse<null>>(400, "중복된 이메일 에러")
   public async handleUserSignUp(
     @Body() body: UserSignUpRequest,
   ): Promise<ApiResponse<UserSignUpResponse>> {
-    console.log("회원가입을 요청했습니다.");
-    console.log("body:", body);
     const user = await userSignUp(body); // 서비스 로직 호출
     return success(user); // 성공 응답 보내기
   }
@@ -66,7 +71,12 @@ export class UserController extends Controller {
     req.res!.clearCookie("username");
     return '로그아웃 완료 (쿠키 삭제). <a href="/api/v1/users/guest">메인으로</a>';
   }
-  @Get("reviews") // 내가 작성한 리뷰들 조회
+  /** 내가 작성한 리뷰들 조회
+   * @summary 내가 작성한 리뷰를 조회할 수 있습니다.
+   */
+  @Get("reviews")
+  @Response<ApiResponse<null>>(200, "내 리뷰 조회 성공")
+  @Response<ApiResponse<null>>(400, "잘못된 요청")
   public async handleGetMyReviews(
     @Query() page: number = 1,
     @Query() limit: number = 10,
@@ -75,7 +85,12 @@ export class UserController extends Controller {
     const reviews = await getMyReviews(userId, { page, limit });
     return success(reviews);
   }
-  @Post("missions/{missionId}") // 가게의 미션을 도전 중인 미션에 추가하기
+  /** 가게의 미션을 도전 중인 미션에 추가하기
+   * @summary 가게의 미션을 도전 중인 미션에 추가합니다.
+   */
+  @Post("missions/{missionId}")
+  @Response<ApiResponse<null>>(200, "미션을 도전 중인 미션에 추가 성공")
+  @Response<ApiResponse<null>>(404, "존재하지 않는 미션")
   public async handleMemberMission(
     @Path() missionId: number,
   ): Promise<ApiResponse<any>> {
@@ -83,7 +98,12 @@ export class UserController extends Controller {
     const memberMission = await createMemberMission(userId, missionId);
     return success(memberMission);
   }
-  @Get("missions") // 내가 진행 중인 미션 조회
+  /** 내가 진행 중인 미션 조회
+   * @summary 내가 진행 중인 미션을 조회합니다.
+   */
+  @Get("missions")
+  @Response<ApiResponse<null>>(200, "내 진행 미션 조회 성공")
+  @Response<ApiResponse<null>>(400, "잘못된 요청")
   public async handleGetMyMissions(
     @Query() page: number = 1,
     @Query() limit: number = 10,
@@ -92,7 +112,13 @@ export class UserController extends Controller {
     const missions = await getMyMissions(userId, { page, limit });
     return success(missions);
   }
-  @Get("missions/{missionId}/success") // 미션 진행 완료로 바꾸기
+  /** 미션 진행 완료로 바꾸기
+   * @summary 미션을 진행 완료로 바꿉니다.
+   */
+  @Get("missions/{missionId}/success")
+  @Response<ApiResponse<null>>(200, "미션 완료 성공")
+  @Response<ApiResponse<null>>(400, "잘못된 요청")
+  @Response<ApiResponse<null>>(404, "존재하지 않는 미션")
   public async handleSuccessMission(
     @Path() missionId: number,
   ): Promise<ApiResponse<any>> {

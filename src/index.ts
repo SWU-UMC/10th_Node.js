@@ -1,4 +1,7 @@
 import dotenv from "dotenv";
+import swaggerUi from "swagger-ui-express";
+import path from "path";
+import fs from "fs";
 import express, { Express, NextFunction, Request, Response } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
@@ -58,3 +61,11 @@ app.use((err: AppError, req: Request, res: Response, next: NextFunction) => {
 app.listen(port, () => {
   console.log(`[server]: Server is running at <http://localhost>:${port}`);
 });
+
+// 1. TSOA가 생성한 swagger.json 읽어오기
+const swaggerFile = JSON.parse(
+  fs.readFileSync(path.resolve("dist/swagger.json"), "utf8"),
+);
+
+// 2. Swagger UI 연결
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerFile));
