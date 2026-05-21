@@ -6,8 +6,16 @@ import express, { Express, NextFunction, Request, Response } from "express";
 import cors from "cors";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
+import swaggerUi from "swagger-ui-express";
+import path from "path";
+import fs from "fs";
 import { RegisterRoutes } from "./routes.js";
 import { AppError } from "./common/errors/app.error.js";
+
+// 1. TSOA가 생성한 swagger.json 읽어오기
+const swaggerDocument = JSON.parse(
+  fs.readFileSync(path.resolve("src/swagger.json"), "utf8")
+);
 
 // res.error 메서드 타입 확장
 declare global {
@@ -49,6 +57,9 @@ app.use(express.urlencoded({ extended: false }));
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello World! This is TypeScript Server!");
 });
+
+// 2. Swagger UI 연결
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
 // Express.js에 생성한 엔드 포인트들을 register
 const router = express.Router();
