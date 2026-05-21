@@ -1,8 +1,12 @@
 // 리뷰 추가 요청 타입
 export interface ReviewAddRequest {
+  /** 리뷰 작성자 유저 ID */
   userId: number;
+  /** 리뷰 대상 가게 ID */
   storeId: number;
+  /** 리뷰 내용 */
   body: string;
+  /** 평점 (1~5) */
   score: number;
 }
 
@@ -18,11 +22,17 @@ export const bodyToReview = (body: ReviewAddRequest) => {
 
 // 리뷰 추가 응답 타입
 export interface ReviewAddResponse {
+  /** 리뷰 ID */
   id: number;
+  /** 리뷰 작성자 유저 ID */
   userId: number;
+  /** 리뷰 대상 가게 ID */
   storeId: number;
+  /** 리뷰 내용 */
   body: string;
+  /** 평점 (1~5) */
   score: number;
+  /** 리뷰 작성일 */
   createdAt: Date;
 }
 

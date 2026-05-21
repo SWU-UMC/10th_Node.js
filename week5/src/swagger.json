@@ -149,32 +149,40 @@
 			"UserSignUpRequest": {
 				"properties": {
 					"email": {
-						"type": "string"
+						"type": "string",
+						"description": "유저 이메일 (로그인 시 사용)"
 					},
 					"name": {
-						"type": "string"
+						"type": "string",
+						"description": "유저 이름"
 					},
 					"gender": {
-						"type": "string"
+						"type": "string",
+						"description": "성별 (예: 'male', 'female')"
 					},
 					"birth": {
-						"type": "string"
+						"type": "string",
+						"description": "생년월일 (예: '1999-01-01')"
 					},
 					"address": {
-						"type": "string"
+						"type": "string",
+						"description": "주소 (선택)"
 					},
 					"detailAddress": {
-						"type": "string"
+						"type": "string",
+						"description": "상세 주소 (선택)"
 					},
 					"phoneNumber": {
-						"type": "string"
+						"type": "string",
+						"description": "전화번호 (예: '010-1234-5678')"
 					},
 					"preferences": {
 						"items": {
 							"type": "number",
 							"format": "double"
 						},
-						"type": "array"
+						"type": "array",
+						"description": "선호 카테고리 ID 배열 (예: [1, 2])"
 					}
 				},
 				"required": [
@@ -192,21 +200,26 @@
 				"properties": {
 					"id": {
 						"type": "number",
-						"format": "double"
+						"format": "double",
+						"description": "가게 ID"
 					},
 					"regionId": {
 						"type": "number",
-						"format": "double"
+						"format": "double",
+						"description": "지역 ID"
 					},
 					"name": {
-						"type": "string"
+						"type": "string",
+						"description": "가게 이름"
 					},
 					"address": {
-						"type": "string"
+						"type": "string",
+						"description": "가게 주소"
 					},
 					"score": {
 						"type": "number",
-						"format": "double"
+						"format": "double",
+						"description": "평균 평점"
 					}
 				},
 				"required": [
@@ -251,13 +264,16 @@
 				"properties": {
 					"regionId": {
 						"type": "number",
-						"format": "double"
+						"format": "double",
+						"description": "지역 ID"
 					},
 					"name": {
-						"type": "string"
+						"type": "string",
+						"description": "가게 이름"
 					},
 					"address": {
-						"type": "string"
+						"type": "string",
+						"description": "가게 주소 (선택)"
 					}
 				},
 				"required": [
@@ -271,26 +287,32 @@
 				"properties": {
 					"id": {
 						"type": "number",
-						"format": "double"
+						"format": "double",
+						"description": "리뷰 ID"
 					},
 					"userId": {
 						"type": "number",
-						"format": "double"
+						"format": "double",
+						"description": "리뷰 작성자 유저 ID"
 					},
 					"storeId": {
 						"type": "number",
-						"format": "double"
+						"format": "double",
+						"description": "리뷰 대상 가게 ID"
 					},
 					"body": {
-						"type": "string"
+						"type": "string",
+						"description": "리뷰 내용"
 					},
 					"score": {
 						"type": "number",
-						"format": "double"
+						"format": "double",
+						"description": "평점 (1~5)"
 					},
 					"createdAt": {
 						"type": "string",
-						"format": "date-time"
+						"format": "date-time",
+						"description": "리뷰 작성일"
 					}
 				},
 				"required": [
@@ -336,18 +358,22 @@
 				"properties": {
 					"userId": {
 						"type": "number",
-						"format": "double"
+						"format": "double",
+						"description": "리뷰 작성자 유저 ID"
 					},
 					"storeId": {
 						"type": "number",
-						"format": "double"
+						"format": "double",
+						"description": "리뷰 대상 가게 ID"
 					},
 					"body": {
-						"type": "string"
+						"type": "string",
+						"description": "리뷰 내용"
 					},
 					"score": {
 						"type": "number",
-						"format": "double"
+						"format": "double",
+						"description": "평점 (1~5)"
 					}
 				},
 				"required": [
@@ -363,22 +389,27 @@
 				"properties": {
 					"id": {
 						"type": "number",
-						"format": "double"
+						"format": "double",
+						"description": "유저 미션 ID"
 					},
 					"userId": {
 						"type": "number",
-						"format": "double"
+						"format": "double",
+						"description": "유저 ID"
 					},
 					"missionId": {
 						"type": "number",
-						"format": "double"
+						"format": "double",
+						"description": "미션 ID"
 					},
 					"status": {
-						"type": "string"
+						"type": "string",
+						"description": "미션 진행 상태 (예: 'in_progress', 'complete')"
 					},
 					"createdAt": {
 						"type": "string",
-						"format": "date-time"
+						"format": "date-time",
+						"description": "도전 시작일"
 					}
 				},
 				"required": [
@@ -423,11 +454,13 @@
 				"properties": {
 					"userId": {
 						"type": "number",
-						"format": "double"
+						"format": "double",
+						"description": "도전하는 유저 ID"
 					},
 					"missionId": {
 						"type": "number",
-						"format": "double"
+						"format": "double",
+						"description": "도전할 미션 ID"
 					}
 				},
 				"required": [
@@ -441,22 +474,27 @@
 				"properties": {
 					"id": {
 						"type": "number",
-						"format": "double"
+						"format": "double",
+						"description": "미션 ID"
 					},
 					"storeId": {
 						"type": "number",
-						"format": "double"
+						"format": "double",
+						"description": "미션 대상 가게 ID"
 					},
 					"reward": {
 						"type": "number",
-						"format": "double"
+						"format": "double",
+						"description": "미션 달성 시 지급 포인트"
 					},
 					"deadline": {
 						"type": "string",
-						"format": "date-time"
+						"format": "date-time",
+						"description": "미션 마감일"
 					},
 					"missionSpec": {
-						"type": "string"
+						"type": "string",
+						"description": "미션 내용"
 					}
 				},
 				"required": [
@@ -501,17 +539,21 @@
 				"properties": {
 					"storeId": {
 						"type": "number",
-						"format": "double"
+						"format": "double",
+						"description": "미션 대상 가게 ID"
 					},
 					"reward": {
 						"type": "number",
-						"format": "double"
+						"format": "double",
+						"description": "미션 달성 시 지급 포인트"
 					},
 					"deadline": {
-						"type": "string"
+						"type": "string",
+						"description": "미션 마감일 (예: '2025-12-31')"
 					},
 					"missionSpec": {
-						"type": "string"
+						"type": "string",
+						"description": "미션 내용"
 					}
 				},
 				"required": [

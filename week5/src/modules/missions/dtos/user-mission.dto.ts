@@ -1,6 +1,8 @@
 // 미션 도전 요청 타입
 export interface UserMissionAddRequest {
+  /** 도전하는 유저 ID */
   userId: number;
+  /** 도전할 미션 ID */
   missionId: number;
 }
 
@@ -14,10 +16,15 @@ export const bodyToUserMission = (body: UserMissionAddRequest) => {
 
 // 미션 도전 응답 타입
 export interface UserMissionAddResponse {
+  /** 유저 미션 ID */
   id: number;
+  /** 유저 ID */
   userId: number;
+  /** 미션 ID */
   missionId: number;
+  /** 미션 진행 상태 (예: 'in_progress', 'complete') */
   status: string;
+  /** 도전 시작일 */
   createdAt: Date;
 }
 

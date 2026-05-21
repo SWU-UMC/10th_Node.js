@@ -1,8 +1,12 @@
 // 미션 추가 요청 타입
 export interface MissionAddRequest {
+  /** 미션 대상 가게 ID */
   storeId: number;
+  /** 미션 달성 시 지급 포인트 */
   reward: number;
+  /** 미션 마감일 (예: '2025-12-31') */
   deadline: string;
+  /** 미션 내용 */
   missionSpec: string;
 }
 
@@ -18,10 +22,15 @@ export const bodyToMission = (body: MissionAddRequest) => {
 
 
 export interface MissionAddResponse {
+  /** 미션 ID */
   id: number;
+  /** 미션 대상 가게 ID */
   storeId: number;
+  /** 미션 달성 시 지급 포인트 */
   reward: number;
+  /** 미션 마감일 */
   deadline: Date;
+  /** 미션 내용 */
   missionSpec: string;
 }
 

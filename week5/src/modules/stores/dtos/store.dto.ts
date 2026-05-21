@@ -1,7 +1,10 @@
 // 가게 추가 요청 타입
 export interface StoreAddRequest {
+  /** 지역 ID */
   regionId: number;
+  /** 가게 이름 */
   name: string;
+  /** 가게 주소 (선택) */
   address?: string;
 }
 
@@ -16,10 +19,15 @@ export const bodyToStore = (body: StoreAddRequest) => {
 
 // 가게 추가 응답 타입
 export interface StoreAddResponse {
+  /** 가게 ID */
   id: number;
+  /** 지역 ID */
   regionId: number;
+  /** 가게 이름 */
   name: string;
+  /** 가게 주소 */
   address: string;
+  /** 평균 평점 */
   score: number;
 }
 
