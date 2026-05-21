@@ -102,6 +102,50 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"ApiErrorResponse": {
+				"properties": {
+					"resultType": {
+						"type": "string",
+						"enum": [
+							"FAILED"
+						],
+						"nullable": false
+					},
+					"error": {
+						"properties": {
+							"data": {},
+							"message": {
+								"type": "string",
+								"nullable": true
+							},
+							"errorCode": {
+								"type": "string",
+								"nullable": true
+							}
+						},
+						"required": [
+							"data",
+							"message",
+							"errorCode"
+						],
+						"type": "object"
+					},
+					"data": {
+						"type": "number",
+						"enum": [
+							null
+						],
+						"nullable": true
+					}
+				},
+				"required": [
+					"resultType",
+					"error",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"UserSignUpRequest": {
 				"properties": {
 					"email": {
@@ -500,8 +544,40 @@
 								}
 							}
 						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiErrorResponse"
+								}
+							}
+						}
+					},
+					"409": {
+						"description": "Conflict - 이미 존재하는 이메일",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiErrorResponse"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiErrorResponse"
+								}
+							}
+						}
 					}
 				},
+				"description": "회원가입 API",
+				"summary": "회원가입을 처리하는 엔드포인트입니다.",
 				"tags": [
 					"Users"
 				],
@@ -532,8 +608,30 @@
 								}
 							}
 						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiErrorResponse"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiErrorResponse"
+								}
+							}
+						}
 					}
 				},
+				"description": "가게 추가 API",
+				"summary": "특정 지역에 새로운 가게를 추가합니다.",
 				"tags": [
 					"Stores"
 				],
@@ -564,8 +662,30 @@
 								}
 							}
 						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiErrorResponse"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiErrorResponse"
+								}
+							}
+						}
 					}
 				},
+				"description": "리뷰 추가 API",
+				"summary": "특정 가게에 리뷰를 추가합니다.",
 				"tags": [
 					"Reviews"
 				],
@@ -596,8 +716,30 @@
 								}
 							}
 						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiErrorResponse"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiErrorResponse"
+								}
+							}
+						}
 					}
 				},
+				"description": "미션 도전 API",
+				"summary": "사용자가 특정 미션에 도전합니다.",
 				"tags": [
 					"UserMissions"
 				],
@@ -628,8 +770,30 @@
 								}
 							}
 						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiErrorResponse"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiErrorResponse"
+								}
+							}
+						}
 					}
 				},
+				"description": "미션 추가 API",
+				"summary": "특정 가게에 미션을 추가합니다.",
 				"tags": [
 					"Missions"
 				],
