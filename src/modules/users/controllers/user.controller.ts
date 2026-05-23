@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Middlewares,
+  Patch,
   Path,
   Post,
   Query,
@@ -12,17 +13,23 @@ import {
   Tags,
 } from "tsoa";
 import { Request as ExpressRequest } from "express";
+import passport from "passport";
 import {
   UserMissionListResponse,
+  UserProfileUpdateRequest,
   UserReviewListResponse,
   UserSignUpRequest,
   UserSignUpResponse,
 } from "../dtos/user.dto";
-import { userSignUp } from "../services/user.service";
+import { updateMyProfile, userSignUp } from "../services/user.service";
 import { authorizeUser } from "../../../common/middlewares/auth.middleware";
 import { ApiResponse, success } from "../../../common/responses/response";
 import * as reviewService from "../../reviews/services/review.service.js";
 import * as missionService from "../../missions/services/mission.service.js";
+
+type AuthenticatedUser = {
+  id: number;
+};
 
 @Route("users")
 @Tags("Users")
@@ -39,6 +46,25 @@ export class UserController extends Controller {
     @Body() body: UserSignUpRequest,
   ): Promise<ApiResponse<UserSignUpResponse>> {
     const user = await userSignUp(body);
+
+    return success(user);
+  }
+
+  /**
+   * 내 정보 수정 API
+   * @summary 로그인한 사용자의 부족한 프로필 정보를 수정합니다.
+   */
+  @Patch("me")
+  @Middlewares(passport.authenticate("jwt", { session: false }))
+  @Response<ApiResponse<UserSignUpResponse>>(200, "내 정보 수정 성공")
+  @Response<ApiResponse<null>>(400, "잘못된 요청")
+  @Response<ApiResponse<null>>(401, "인증 실패")
+  public async handleUpdateMyProfile(
+    @Body() body: UserProfileUpdateRequest,
+    @Request() req: ExpressRequest,
+  ): Promise<ApiResponse<UserSignUpResponse>> {
+    const userId = (req.user as AuthenticatedUser).id;
+    const user = await updateMyProfile(userId, body);
 
     return success(user);
   }

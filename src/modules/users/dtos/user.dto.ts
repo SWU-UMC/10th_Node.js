@@ -28,6 +28,16 @@ export interface UserSignUpResponse {
   preferCategory: string[];
 }
 
+export interface UserProfileUpdateRequest {
+  name: string;
+  gender: string;
+  birth: string;
+  address: string;
+  detailAddress?: string | null;
+  phoneNumber: string;
+  preferences?: number[];
+}
+
 export interface UserReviewListResponse {
   /** 리뷰 목록 */
   data: Array<{
@@ -112,6 +122,20 @@ export const bodyToUser = (body: UserSignUpRequest) => {
     birth,
     address: body.address || "",
     detailAddress: body.detailAddress || "",
+    phoneNumber: body.phoneNumber,
+    preferences: body.preferences,
+  };
+};
+
+export const bodyToUserProfileUpdate = (body: UserProfileUpdateRequest) => {
+  const birth = new Date(body.birth);
+
+  return {
+    name: body.name,
+    gender: body.gender,
+    birth,
+    address: body.address,
+    detailAddress: body.detailAddress ?? null,
     phoneNumber: body.phoneNumber,
     preferences: body.preferences,
   };

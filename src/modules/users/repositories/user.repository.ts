@@ -1,4 +1,3 @@
-import { ResultSetHeader, RowDataPacket } from "mysql2";
 import { prisma } from "../../../db.config.js";
 
 // User 데이터 삽입
@@ -30,6 +29,20 @@ export const getUser = async (userId: number) => {
   return await prisma.user.findFirstOrThrow({ where: { id: userId } });
 };
 
+export const updateUser = async (userId: number, data: any) => {
+  return await prisma.user.update({
+    where: { id: userId },
+    data: {
+      name: data.name,
+      gender: data.gender,
+      birth: data.birth,
+      address: data.address,
+      detailAddress: data.detailAddress,
+      phoneNumber: data.phoneNumber,
+    },
+  });
+};
+
 // 음식 선호 카테고리 매핑
 export const setPreference = async (userId: number, foodCategoryId: number) => {
   await prisma.userFavorCategory.create({
@@ -37,6 +50,24 @@ export const setPreference = async (userId: number, foodCategoryId: number) => {
       userId: userId,
       foodCategoryId: foodCategoryId,
     },
+  });
+};
+
+export const replacePreferences = async (userId: number, foodCategoryIds: number[]) => {
+  await prisma.userFavorCategory.deleteMany({
+    where: { userId },
+  });
+
+  if (foodCategoryIds.length === 0) {
+    return;
+  }
+
+  await prisma.userFavorCategory.createMany({
+    data: foodCategoryIds.map((foodCategoryId) => ({
+      userId,
+      foodCategoryId,
+    })),
+    skipDuplicates: true,
   });
 };
 
