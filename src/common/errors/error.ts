@@ -21,6 +21,16 @@ export class UserNotFoundError extends AppError {
     });
   }
 }
+export class UnauthorizedUserError extends AppError {
+  constructor(message: string, data?: unknown) {
+    super({
+      errorCode: "U003",
+      statusCode: 401,
+      message,
+      data,
+    });
+  }
+}
 
 /** Store 에러 */
 export class StoreNotFoundError extends AppError {

@@ -1,5 +1,6 @@
 import { prisma } from "../../../db.config.js";
 import { getReviewsQuery } from "../../reviews/dtos/review.dto.js";
+import { ChangeUser } from "../dtos/user.dto.js";
 
 // 1. User 데이터 삽입
 export const addUser = async (data: any): Promise<number | null> => {
@@ -26,7 +27,7 @@ export const addUser = async (data: any): Promise<number | null> => {
 
 // 2. 사용자 정보 얻기
 export const getUser = async (userId: number): Promise<any | null> => {
-  return await prisma.user.findFirstOrThrow({ where: { id: userId } });
+  return await prisma.user.findFirst({ where: { id: userId } });
 };
 
 // 3. 음식 선호 카데고리 매핑
@@ -78,4 +79,18 @@ export const getAllMyReviews = async (
   });
 
   return reviews;
+};
+
+// 내 정보 수정하기
+export const updateMe = async (userId: number, body: ChangeUser) => {
+  const user = await prisma.user.update({
+    data: {
+      name: body.name,
+      gender: body.gender,
+      birth: body.birth,
+      address: body.address,
+      phoneNum: body.phoneNum,
+    },
+    where: { id: userId },
+  });
 };

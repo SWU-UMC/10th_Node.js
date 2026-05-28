@@ -4,6 +4,7 @@ import {
   Get,
   Middlewares,
   Post,
+  Patch,
   Request,
   Response,
   Route,
@@ -11,8 +12,17 @@ import {
   Query,
   Path,
 } from "tsoa";
-import { UserSignUpRequest, UserSignUpResponse } from "../dtos/user.dto.js";
-import { userSignUp, getMyReviews } from "../services/user.service.js";
+import {
+  AuthenticatedUser,
+  UserSignUpRequest,
+  UserSignUpResponse,
+  ChangeUser,
+} from "../dtos/user.dto.js";
+import {
+  userSignUp,
+  getMyReviews,
+  updateUser,
+} from "../services/user.service.js";
 import { ApiResponse, success } from "../../../common/responses/response.js";
 import { authorizeUser } from "../../../common/middlewares/auth.middleware.js";
 import { Request as ExpressRequest } from "express";
@@ -21,6 +31,9 @@ import {
   getMyMissions,
   successMission,
 } from "../../missions/services/mission.service.js";
+import passport from "passport";
+
+const isLogin = passport.authenticate("jwt", { session: false });
 
 @Route("users") // 라우트 경로
 @Tags("Users") // Swagger 태그
@@ -75,13 +88,15 @@ export class UserController extends Controller {
    * @summary 내가 작성한 리뷰를 조회할 수 있습니다.
    */
   @Get("reviews")
+  @Middlewares(isLogin)
   @Response<ApiResponse<null>>(200, "내 리뷰 조회 성공")
   @Response<ApiResponse<null>>(400, "잘못된 요청")
   public async handleGetMyReviews(
     @Query() page: number = 1,
     @Query() limit: number = 10,
+    @Request() req: any,
   ): Promise<ApiResponse<any>> {
-    const userId = 1;
+    const userId = (req.user as AuthenticatedUser).id;
     const reviews = await getMyReviews(userId, { page, limit });
     return success(reviews);
   }
@@ -89,12 +104,14 @@ export class UserController extends Controller {
    * @summary 가게의 미션을 도전 중인 미션에 추가합니다.
    */
   @Post("missions/{missionId}")
+  @Middlewares(isLogin)
   @Response<ApiResponse<null>>(200, "미션을 도전 중인 미션에 추가 성공")
   @Response<ApiResponse<null>>(404, "존재하지 않는 미션")
   public async handleMemberMission(
     @Path() missionId: number,
+    @Request() req: any,
   ): Promise<ApiResponse<any>> {
-    const userId = 1;
+    const userId = (req.user as AuthenticatedUser).id;
     const memberMission = await createMemberMission(userId, missionId);
     return success(memberMission);
   }
@@ -102,13 +119,15 @@ export class UserController extends Controller {
    * @summary 내가 진행 중인 미션을 조회합니다.
    */
   @Get("missions")
+  @Middlewares(isLogin)
   @Response<ApiResponse<null>>(200, "내 진행 미션 조회 성공")
   @Response<ApiResponse<null>>(400, "잘못된 요청")
   public async handleGetMyMissions(
     @Query() page: number = 1,
     @Query() limit: number = 10,
+    @Request() req: any,
   ): Promise<ApiResponse<any>> {
-    const userId = 1;
+    const userId = (req.user as AuthenticatedUser).id;
     const missions = await getMyMissions(userId, { page, limit });
     return success(missions);
   }
@@ -116,14 +135,31 @@ export class UserController extends Controller {
    * @summary 미션을 진행 완료로 바꿉니다.
    */
   @Get("missions/{missionId}/success")
+  @Middlewares(isLogin)
   @Response<ApiResponse<null>>(200, "미션 완료 성공")
   @Response<ApiResponse<null>>(400, "잘못된 요청")
   @Response<ApiResponse<null>>(404, "존재하지 않는 미션")
   public async handleSuccessMission(
     @Path() missionId: number,
+    @Request() req: any,
   ): Promise<ApiResponse<any>> {
-    const userId = 1;
+    const userId = (req.user as AuthenticatedUser).id;
     const mission = await successMission(userId, missionId);
     return success(mission);
+  }
+  /** 회원 정보 수정하기
+   * @summary name, gender, birth, address, phoneNum 수정이 가능합니다.
+   */
+  @Patch("/mypage")
+  @Middlewares(isLogin)
+  @Response<ApiResponse<null>>(200, "회원 정보 수정 성공")
+  @Response<ApiResponse<null>>(400, "잘못된 요청")
+  public async handleUpdateUser(
+    @Request() req: any,
+    @Body() body: ChangeUser,
+  ): Promise<ApiResponse<any>> {
+    const userId = (req.user as AuthenticatedUser).id;
+    const changedUser = await updateUser(userId, body);
+    return success(changedUser);
   }
 }

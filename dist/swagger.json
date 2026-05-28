@@ -162,6 +162,41 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"ChangeUser": {
+				"properties": {
+					"name": {
+						"type": "string",
+						"description": "유저 이름"
+					},
+					"gender": {
+						"type": "string",
+						"description": "유저 성별"
+					},
+					"birth": {
+						"type": "string",
+						"format": "date-time",
+						"description": "유저 생일"
+					},
+					"address": {
+						"type": "string",
+						"description": "주소"
+					},
+					"phoneNum": {
+						"type": "string",
+						"description": "휴대폰번호"
+					},
+					"preferences": {
+						"items": {
+							"type": "number",
+							"format": "double"
+						},
+						"type": "array",
+						"description": "선호 카테고리 ID 배열 (예: [1, 2])"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
 			"createMissionRequest": {
 				"properties": {
 					"title": {
@@ -313,6 +348,48 @@
 				],
 				"security": [],
 				"parameters": []
+			},
+			"patch": {
+				"operationId": "HandleUpdateUser",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponse_any_"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "잘못된 요청",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponse_null_"
+								}
+							}
+						}
+					}
+				},
+				"description": "회원 정보 수정하기",
+				"summary": "name, gender, birth, address, phoneNum 수정이 가능합니다.",
+				"tags": [
+					"Users"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ChangeUser"
+							}
+						}
+					}
+				}
 			}
 		},
 		"/users/set-login": {
