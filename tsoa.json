@@ -1,0 +1,31 @@
+{
+  "entryFile": "src/index.ts",
+  "controllerPathGlobs": [
+    "src/modules/**/*.controller.ts"
+  ],
+  "spec": {
+    "outputDirectory": "dist",
+    "specVersion": 3,
+
+    "basePath": "/api/v1",
+
+    "info": {
+      "title": "UMC 10th",
+      "version": "1.0.0",
+      "description": "UMC 10th Node.js 테스트 프로젝트입니다."
+    },
+
+    "servers": [
+      {
+        "url": "http://localhost:3000",
+        "description": "Local Server"
+      }
+    ]
+  } ,
+
+  "routes": {
+    "routesDir": "src/generated",
+    "middleware": "express"
+  }
+
+}
