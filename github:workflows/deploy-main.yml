@@ -15,16 +15,15 @@ jobs:
         with:
           node-version: "24"
           cache: "npm"
-
       - name: Install dependencies
         run: npm ci
       - name: Inject environment variables
         run: |
           cat > .env <<'EOF'
-          ${{ secrets.EC2_DOT_ENV }}
+          ${{ secrets.RAIN_EC2_DOT_ENV }}
           EOF
         env:
-          EC2_DOT_ENV: ${{ secrets.EC2_DOT_ENV }}
+          EC2_DOT_ENV: ${{ secrets.RAIN_EC2_DOT_ENV }}
       - name: Generate + Build
         run: npx prisma generate&&npm run build
       - name: Prune devDependencies (runtime) + Regenerate
@@ -59,24 +58,25 @@ jobs:
           tar -xzf artifact.tgz -C artifact
       - name: Configure SSH
         run: |
-        mkdir -p ~/.ssh
-        echo "$EC2_SSH_KEY" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        echo "Host target
-        HostName $EC2_HOST
-        Port $EC2_PORT
-        User $EC2_USER
-        IdentityFile ~/.ssh/id_rsa
-        StrictHostKeyChecking no" > ~/.ssh/config
+          mkdir -p ~/.ssh
+          echo "$EC2_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          echo "Host target
+            HostName $EC2_HOST
+            Port $EC2_PORT
+            User $EC2_USER
+            IdentityFile ~/.ssh/id_rsa
+            StrictHostKeyChecking no" > ~/.ssh/config
         env:
-        EC2_SSH_KEY: ${{ secrets.RAIN_EC2_SSH_KEY }}
-        EC2_HOST: ${{ secrets.RAIN_EC2_HOST }}
-        EC2_PORT: ${{ secrets.RAIN_EC2_PORT }}
-        EC2_USER: ${{ secrets.RAIN_EC2_USER }}
+          EC2_SSH_KEY: ${{ secrets.RAIN_EC2_SSH_KEY }}
+          EC2_HOST: ${{ secrets.RAIN_EC2_HOST }}
+          EC2_PORT: ${{ secrets.RAIN_EC2_PORT }}
+          EC2_USER: ${{ secrets.RAIN_EC2_USER }}
       - name: Copy artifact to Server
         run: |
           ssh target 'sudo mkdir -p /opt/app/umc10th/incoming&&sudo chown -R ec2-user:ec2-user /opt/app/umc10th'
-          rsync -az --delete --ignore-missing-args\
+          cd artifact
+          rsync -az --delete --ignore-missing-args \
               --exclude ".git" \
               --exclude ".env" \
               ./dist ./prisma ./node_modules ./package.json ./package-lock.json prisma.config.ts \
@@ -84,43 +84,39 @@ jobs:
       - name: Switch Environment
         run: |
           ssh target '
-              set -e
-              cd /opt/app/umc10th
-              rm -rf current
-              mv incoming current
-              '
+            set -e
+            cd /opt/app/umc10th
+            rm -rf current
+            mv incoming current
+          '
       - name: Create environment variables
         run: |
           ssh target "cat > /opt/app/umc10th/current/.env <<'EOF'
-          ${{ secrets.EC2_DOT_ENV }}
+          ${{ secrets.RAIN_EC2_DOT_ENV }}
           EOF"
         env:
-          EC2_DOT_ENV: ${{ secrets.EC2_DOT_ENV }}
+          EC2_DOT_ENV: ${{ secrets.RAIN_EC2_DOT_ENV }}
       - name: Config systemd service file
         run: |
           ssh target 'sudo systemctl unmask UMC_10th || true'
-
           cat <<'EOF' | ssh target 'sudo tee /etc/systemd/system/UMC_10th.service > /dev/null'
           [Unit]
           Description=UMC_10th
           After=network.target
 
-      [Service]
-      User=ec2-user
-      WorkingDirectory=/opt/app/umc10th/current
-      ExecStart=/bin/bash -lc 'source /home/ec2-user/.nvm/nvm.sh && npm run start'
-      Restart=always
+          [Service]
+          User=ec2-user
+          WorkingDirectory=/opt/app/umc10th/current
+          ExecStart=/bin/bash -lc 'source /home/ec2-user/.nvm/nvm.sh && npm run start'
+          Restart=always
           Environment=NODE_ENV=production
 
           [Install]
           WantedBy=multi-user.target
           EOF
-
           ssh target 'sudo systemctl daemon-reload'
           ssh target 'sudo systemctl enable UMC_10th'
           ssh target 'sudo systemctl restart UMC_10th'
-
       - name: Check service status
         run: |
           ssh target 'sudo systemctl status UMC_10th -l --no-pager'
-
