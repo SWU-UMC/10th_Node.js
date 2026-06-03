@@ -59,22 +59,20 @@ jobs:
           tar -xzf artifact.tgz -C artifact
       - name: Configure SSH
         run: |
-          mkdir -p ~/.ssh
-          echo "$EC2_SSH_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          cat >> ~/.ssh/config <<END
-          Host target
-              HostName $EC2_HOST
-              Port $EC2_PORT
-              User $EC2_USER
-              IdentityFile ~/.ssh/id_rsa
-              StrictHostKeyChecking no
-          END
+        mkdir -p ~/.ssh
+        echo "$EC2_SSH_KEY" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        echo "Host target
+        HostName $EC2_HOST
+        Port $EC2_PORT
+        User $EC2_USER
+        IdentityFile ~/.ssh/id_rsa
+        StrictHostKeyChecking no" > ~/.ssh/config
         env:
+        EC2_SSH_KEY: ${{ secrets.RAIN_EC2_SSH_KEY }}
         EC2_HOST: ${{ secrets.RAIN_EC2_HOST }}
         EC2_PORT: ${{ secrets.RAIN_EC2_PORT }}
         EC2_USER: ${{ secrets.RAIN_EC2_USER }}
-        EC2_SSH_KEY: ${{ secrets.RAIN_EC2_SSH_KEY }}
       - name: Copy artifact to Server
         run: |
           ssh target 'sudo mkdir -p /opt/app/umc10th/incoming&&sudo chown -R ec2-user:ec2-user /opt/app/umc10th'
@@ -125,3 +123,4 @@ jobs:
       - name: Check service status
         run: |
           ssh target 'sudo systemctl status UMC_10th -l --no-pager'
+
