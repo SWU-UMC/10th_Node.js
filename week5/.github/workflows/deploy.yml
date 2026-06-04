@@ -1,0 +1,126 @@
+name: deploy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate TSOA routes & spec
+        run: npx tsoa spec-and-routes
+
+      - name: Pack artifact
+        run: |
+          mkdir -p artifact
+          cp -r src artifact/src
+          cp -r node_modules artifact/node_modules
+          cp package.json package-lock.json tsoa.json tsconfig.json artifact/
+          tar -czf artifact.tgz -C artifact .
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-artifact
+          path: artifact.tgz
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: app-artifact
+          path: .
+
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "$EC2_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          cat >> ~/.ssh/config <<END
+          Host target
+              HostName $EC2_HOST
+              Port $EC2_PORT
+              User $EC2_USER
+              IdentityFile ~/.ssh/id_rsa
+              StrictHostKeyChecking no
+          END
+        env:
+          EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_PORT: ${{ secrets.EC2_PORT }}
+          EC2_USER: ${{ secrets.EC2_USER }}
+
+      - name: Copy artifact to server
+        run: |
+          ssh target 'sudo mkdir -p /opt/app/week5/incoming && sudo chown -R ubuntu:ubuntu /opt/app/week5'
+          mkdir -p artifact
+          tar -xzf artifact.tgz -C artifact
+          rsync -az --delete \
+            --exclude ".git" \
+            --exclude ".env" \
+            artifact/ \
+            target:/opt/app/week5/incoming/
+
+      - name: Switch environment
+        run: |
+          ssh target '
+            set -e
+            cd /opt/app/week5
+            rm -rf current
+            mv incoming current
+          '
+
+      - name: Create .env file
+        run: |
+          ssh target "printf '%s' '$EC2_DOT_ENV' > /opt/app/week5/current/.env"
+        env:
+          EC2_DOT_ENV: ${{ secrets.EC2_DOT_ENV }}
+
+      - name: Configure systemd service
+        run: |
+          ssh target 'sudo systemctl unmask week5-app || true'
+
+          cat <<'EOF' | ssh target 'sudo tee /etc/systemd/system/week5-app.service > /dev/null'
+          [Unit]
+          Description=Week5 Node.js App
+          After=network.target
+
+          [Service]
+          User=ubuntu
+          WorkingDirectory=/opt/app/week5/current
+          ExecStart=/bin/bash -lc 'source /home/ubuntu/.nvm/nvm.sh && npx tsx src/index.ts'
+          Restart=always
+          RestartSec=5
+          Environment=NODE_ENV=production
+
+          [Install]
+          WantedBy=multi-user.target
+          EOF
+
+          ssh target 'sudo systemctl daemon-reload'
+          ssh target 'sudo systemctl enable week5-app'
+          ssh target 'sudo systemctl restart week5-app'
+
+      - name: Check service status
+        run: |
+          ssh target 'sudo systemctl status week5-app -l --no-pager'
