@@ -1,0 +1,862 @@
+{
+	"openapi": "3.0.0",
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"UserSignUpResponse": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"email": {
+						"type": "string"
+					},
+					"name": {
+						"type": "string"
+					},
+					"gender": {
+						"type": "string"
+					},
+					"birth": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"address": {
+						"type": "string"
+					},
+					"detailAddress": {
+						"type": "string"
+					},
+					"phoneNumber": {
+						"type": "string"
+					},
+					"preferences": {
+						"items": {
+							"properties": {
+								"name": {
+									"type": "string"
+								},
+								"foodCategoryId": {
+									"type": "number",
+									"format": "double"
+								},
+								"id": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"name",
+								"foodCategoryId",
+								"id"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"id",
+					"email",
+					"name",
+					"gender",
+					"birth",
+					"address",
+					"detailAddress",
+					"phoneNumber",
+					"preferences"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ApiResponse_UserSignUpResponse_": {
+				"properties": {
+					"resultType": {
+						"type": "string",
+						"enum": [
+							"SUCCESS"
+						],
+						"nullable": false
+					},
+					"error": {
+						"type": "number",
+						"enum": [
+							null
+						],
+						"nullable": true
+					},
+					"data": {
+						"$ref": "#/components/schemas/UserSignUpResponse"
+					}
+				},
+				"required": [
+					"resultType",
+					"error",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ApiErrorResponse": {
+				"properties": {
+					"resultType": {
+						"type": "string",
+						"enum": [
+							"FAILED"
+						],
+						"nullable": false
+					},
+					"error": {
+						"properties": {
+							"data": {},
+							"message": {
+								"type": "string",
+								"nullable": true
+							},
+							"errorCode": {
+								"type": "string",
+								"nullable": true
+							}
+						},
+						"required": [
+							"data",
+							"message",
+							"errorCode"
+						],
+						"type": "object"
+					},
+					"data": {
+						"type": "number",
+						"enum": [
+							null
+						],
+						"nullable": true
+					}
+				},
+				"required": [
+					"resultType",
+					"error",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UserSignUpRequest": {
+				"properties": {
+					"email": {
+						"type": "string",
+						"description": "유저 이메일 (로그인 시 사용)"
+					},
+					"name": {
+						"type": "string",
+						"description": "유저 이름"
+					},
+					"gender": {
+						"type": "string",
+						"description": "성별 (예: 'male', 'female')"
+					},
+					"birth": {
+						"type": "string",
+						"description": "생년월일 (예: '1999-01-01')"
+					},
+					"address": {
+						"type": "string",
+						"description": "주소 (선택)"
+					},
+					"detailAddress": {
+						"type": "string",
+						"description": "상세 주소 (선택)"
+					},
+					"phoneNumber": {
+						"type": "string",
+						"description": "전화번호 (예: '010-1234-5678')"
+					},
+					"preferences": {
+						"items": {
+							"type": "number",
+							"format": "double"
+						},
+						"type": "array",
+						"description": "선호 카테고리 ID 배열 (예: [1, 2])"
+					}
+				},
+				"required": [
+					"email",
+					"name",
+					"gender",
+					"birth",
+					"phoneNumber",
+					"preferences"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"StoreAddResponse": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double",
+						"description": "가게 ID"
+					},
+					"regionId": {
+						"type": "number",
+						"format": "double",
+						"description": "지역 ID"
+					},
+					"name": {
+						"type": "string",
+						"description": "가게 이름"
+					},
+					"address": {
+						"type": "string",
+						"description": "가게 주소"
+					},
+					"score": {
+						"type": "number",
+						"format": "double",
+						"description": "평균 평점"
+					}
+				},
+				"required": [
+					"id",
+					"regionId",
+					"name",
+					"address",
+					"score"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ApiResponse_StoreAddResponse_": {
+				"properties": {
+					"resultType": {
+						"type": "string",
+						"enum": [
+							"SUCCESS"
+						],
+						"nullable": false
+					},
+					"error": {
+						"type": "number",
+						"enum": [
+							null
+						],
+						"nullable": true
+					},
+					"data": {
+						"$ref": "#/components/schemas/StoreAddResponse"
+					}
+				},
+				"required": [
+					"resultType",
+					"error",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"StoreAddRequest": {
+				"properties": {
+					"regionId": {
+						"type": "number",
+						"format": "double",
+						"description": "지역 ID"
+					},
+					"name": {
+						"type": "string",
+						"description": "가게 이름"
+					},
+					"address": {
+						"type": "string",
+						"description": "가게 주소 (선택)"
+					}
+				},
+				"required": [
+					"regionId",
+					"name"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ReviewAddResponse": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double",
+						"description": "리뷰 ID"
+					},
+					"userId": {
+						"type": "number",
+						"format": "double",
+						"description": "리뷰 작성자 유저 ID"
+					},
+					"storeId": {
+						"type": "number",
+						"format": "double",
+						"description": "리뷰 대상 가게 ID"
+					},
+					"body": {
+						"type": "string",
+						"description": "리뷰 내용"
+					},
+					"score": {
+						"type": "number",
+						"format": "double",
+						"description": "평점 (1~5)"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time",
+						"description": "리뷰 작성일"
+					}
+				},
+				"required": [
+					"id",
+					"userId",
+					"storeId",
+					"body",
+					"score",
+					"createdAt"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ApiResponse_ReviewAddResponse_": {
+				"properties": {
+					"resultType": {
+						"type": "string",
+						"enum": [
+							"SUCCESS"
+						],
+						"nullable": false
+					},
+					"error": {
+						"type": "number",
+						"enum": [
+							null
+						],
+						"nullable": true
+					},
+					"data": {
+						"$ref": "#/components/schemas/ReviewAddResponse"
+					}
+				},
+				"required": [
+					"resultType",
+					"error",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ReviewAddRequest": {
+				"properties": {
+					"userId": {
+						"type": "number",
+						"format": "double",
+						"description": "리뷰 작성자 유저 ID"
+					},
+					"storeId": {
+						"type": "number",
+						"format": "double",
+						"description": "리뷰 대상 가게 ID"
+					},
+					"body": {
+						"type": "string",
+						"description": "리뷰 내용"
+					},
+					"score": {
+						"type": "number",
+						"format": "double",
+						"description": "평점 (1~5)"
+					}
+				},
+				"required": [
+					"userId",
+					"storeId",
+					"body",
+					"score"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UserMissionAddResponse": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double",
+						"description": "유저 미션 ID"
+					},
+					"userId": {
+						"type": "number",
+						"format": "double",
+						"description": "유저 ID"
+					},
+					"missionId": {
+						"type": "number",
+						"format": "double",
+						"description": "미션 ID"
+					},
+					"status": {
+						"type": "string",
+						"description": "미션 진행 상태 (예: 'in_progress', 'complete')"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time",
+						"description": "도전 시작일"
+					}
+				},
+				"required": [
+					"id",
+					"userId",
+					"missionId",
+					"status",
+					"createdAt"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ApiResponse_UserMissionAddResponse_": {
+				"properties": {
+					"resultType": {
+						"type": "string",
+						"enum": [
+							"SUCCESS"
+						],
+						"nullable": false
+					},
+					"error": {
+						"type": "number",
+						"enum": [
+							null
+						],
+						"nullable": true
+					},
+					"data": {
+						"$ref": "#/components/schemas/UserMissionAddResponse"
+					}
+				},
+				"required": [
+					"resultType",
+					"error",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"UserMissionAddRequest": {
+				"properties": {
+					"userId": {
+						"type": "number",
+						"format": "double",
+						"description": "도전하는 유저 ID"
+					},
+					"missionId": {
+						"type": "number",
+						"format": "double",
+						"description": "도전할 미션 ID"
+					}
+				},
+				"required": [
+					"userId",
+					"missionId"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"MissionAddResponse": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double",
+						"description": "미션 ID"
+					},
+					"storeId": {
+						"type": "number",
+						"format": "double",
+						"description": "미션 대상 가게 ID"
+					},
+					"reward": {
+						"type": "number",
+						"format": "double",
+						"description": "미션 달성 시 지급 포인트"
+					},
+					"deadline": {
+						"type": "string",
+						"format": "date-time",
+						"description": "미션 마감일"
+					},
+					"missionSpec": {
+						"type": "string",
+						"description": "미션 내용"
+					}
+				},
+				"required": [
+					"id",
+					"storeId",
+					"reward",
+					"deadline",
+					"missionSpec"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ApiResponse_MissionAddResponse_": {
+				"properties": {
+					"resultType": {
+						"type": "string",
+						"enum": [
+							"SUCCESS"
+						],
+						"nullable": false
+					},
+					"error": {
+						"type": "number",
+						"enum": [
+							null
+						],
+						"nullable": true
+					},
+					"data": {
+						"$ref": "#/components/schemas/MissionAddResponse"
+					}
+				},
+				"required": [
+					"resultType",
+					"error",
+					"data"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"MissionAddRequest": {
+				"properties": {
+					"storeId": {
+						"type": "number",
+						"format": "double",
+						"description": "미션 대상 가게 ID"
+					},
+					"reward": {
+						"type": "number",
+						"format": "double",
+						"description": "미션 달성 시 지급 포인트"
+					},
+					"deadline": {
+						"type": "string",
+						"description": "미션 마감일 (예: '2025-12-31')"
+					},
+					"missionSpec": {
+						"type": "string",
+						"description": "미션 내용"
+					}
+				},
+				"required": [
+					"storeId",
+					"reward",
+					"deadline",
+					"missionSpec"
+				],
+				"type": "object",
+				"additionalProperties": false
+			}
+		},
+		"securitySchemes": {}
+	},
+	"info": {
+		"title": "",
+		"contact": {}
+	},
+	"paths": {
+		"/users/signup": {
+			"post": {
+				"operationId": "HandleUserSignUp",
+				"responses": {
+					"200": {
+						"description": "OK",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponse_UserSignUpResponse_"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiErrorResponse"
+								}
+							}
+						}
+					},
+					"409": {
+						"description": "Conflict - 이미 존재하는 이메일",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiErrorResponse"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "회원가입 API",
+				"summary": "회원가입을 처리하는 엔드포인트입니다.",
+				"tags": [
+					"Users"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserSignUpRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/stores": {
+			"post": {
+				"operationId": "AddStore",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponse_StoreAddResponse_"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiErrorResponse"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "가게 추가 API",
+				"summary": "특정 지역에 새로운 가게를 추가합니다.",
+				"tags": [
+					"Stores"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/StoreAddRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/reviews": {
+			"post": {
+				"operationId": "AddReview",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponse_ReviewAddResponse_"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiErrorResponse"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "리뷰 추가 API",
+				"summary": "특정 가게에 리뷰를 추가합니다.",
+				"tags": [
+					"Reviews"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ReviewAddRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/user-missions": {
+			"post": {
+				"operationId": "AddUserMission",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponse_UserMissionAddResponse_"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiErrorResponse"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "미션 도전 API",
+				"summary": "사용자가 특정 미션에 도전합니다.",
+				"tags": [
+					"UserMissions"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserMissionAddRequest"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/missions": {
+			"post": {
+				"operationId": "AddMission",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiResponse_MissionAddResponse_"
+								}
+							}
+						}
+					},
+					"400": {
+						"description": "Bad Request",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiErrorResponse"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Internal Server Error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ApiErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"description": "미션 추가 API",
+				"summary": "특정 가게에 미션을 추가합니다.",
+				"tags": [
+					"Missions"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/MissionAddRequest"
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/api/v1"
+		}
+	]
+}
